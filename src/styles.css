@@ -1,0 +1,18 @@
+body {
+    background-color: #0f1011;
+    color: white;
+}
+
+/* Slider */
+.slider-container {
+    margin: 0 auto;
+    /* Centra el slider horizontalmente */
+}
+
+.slider-image {
+    max-height: 550px;
+    /* Ajusta la altura máxima de las imágenes según tus necesidades */
+    width: 100%;
+    object-fit: cover;
+    /* Asegura que las imágenes se ajusten correctamente en el contenedor */
+}
