@@ -1,25 +1,39 @@
 import { Link } from 'react-router-dom'
 
 
-export const ProductCard = () => {
+export const ProductCard = ({ id, band, album, album_img, category }) => {
+
+    const discosURL = album_img ? `/assets/img/discos/${album_img}.png` : '';
+
+
     return (
+
         <div className="col animate__animated animate__fadeIn">
             <div className="card bg-dark text-light">
 
                 <div className="row no-gutters">
                     <div className="col-4">
-                        <img src='../assets/img/example.png' className="card-img" alt='' />
+
+                        {
+                            album_img ? (
+                                <img src={discosURL} className="card-img" alt={band} />
+                            ) : (
+                                <div className="card-img card-placeholder">No hay imagen</div>
+                            )
+                        }
+
+                        {/* <img src={discosURL} className="card-img" alt={band} /> */}
                     </div>
                     <div className="col-8">
                         <div className="card-body">
-                            <h5>Titulo</h5>
-                            <p className="card-text"> example</p>
-                            <p className="card-text">
-                                <small className="text-muted">texto</small>
+                            <h3>{band}</h3>
+                            <p className="card-text text-light">Album: {album} </p>
+                            <p className="card-text text-light">
+                                <small className="text-light">Categoría: {category} </small>
                             </p>
 
-                            <Link to={`/detail/`}>
-                                More...
+                            <Link to={`/detail/${id}`}>
+                                Detalles
                             </Link>
                         </div>
                     </div>
