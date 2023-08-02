@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import 'animate.css';
 
 export const SignupPage = () => {
   const [name, setName] = useState('');
@@ -9,7 +10,7 @@ export const SignupPage = () => {
   const [error, setError] = useState('');
   const [isRegistered, setIsRegistered] = useState(false);
 
-  const navigate = useNavigate(); // Obtenemos la función navigate para la redirección
+  const navigate = useNavigate(); 
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -18,7 +19,6 @@ export const SignupPage = () => {
       return;
     }
 
-    // Simulamos el registro exitoso del usuario con un retraso de 1.5 segundos
     setError(false);
     setIsRegistered(true);
     setTimeout(() => {
@@ -27,13 +27,12 @@ export const SignupPage = () => {
       setEmail('');
       setPassword('');
 
-      // Redirigimos al usuario a /home después de un registro exitoso
       navigate("/home");
     }, 1500);
   };
 
   return (
-    <div className='col-md-6 mx-auto'>
+    <div className='col-md-6 mx-auto animate__animated animate__fadeIn'>
       <h1 className='mt-3'>SignUp</h1>
 
       <Form onSubmit={handleSubmit}>

@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import 'animate.css';
 
 
 export const ProductCard = ({ id, band, album, albumImage, category }) => {

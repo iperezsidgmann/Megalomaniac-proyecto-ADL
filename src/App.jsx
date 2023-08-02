@@ -1,8 +1,11 @@
 import { useMemo } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Navbar, DetailProduct } from "./components/index";
-import { HomePage, LoginPage, SignupPage } from "./views/index";
-import { discos } from "./data/discos"; // Importa la lista de discos desde data/discos.js
+import { Navbar } from "./components/Navbar";
+import { DetailProduct } from "./components/DetailProduct";
+import { HomePage } from "./views/HomePage";
+import { LoginPage } from "./views/LoginPage";
+import { SignupPage } from "./views/SignupPage";
+import { discos } from "./data/discos";
 
 
 function App() {
@@ -29,7 +32,11 @@ function App() {
         <Route path="/home" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
-        <Route path="/detail/:id" element={<DetailProduct />} />
+        {/* Pasamos discos como una prop al componente DetailProduct */}
+        <Route
+          path="/detail/:id"
+          element={<DetailProduct discos={memoizedDiscos} />}
+        />
       </Routes>
     </BrowserRouter>
   );

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { discos } from '../data/discos';
 import { ProductCard } from './index';
+import 'animate.css';
 
 export const ProductList = () => {
 	const location = useLocation();
@@ -39,14 +40,14 @@ export const ProductList = () => {
 	}, [searchTerm]);
 
 	return (
-		<div className="col-md-10 mt-4 mx-auto">
+		<div className="col-md-10 mt-4 mx-auto animate__animated animate__fadeIn">
 			<h2>Discografías</h2>
 			<hr />
 
 			{!resultsFound ? (
 				<div>No se encontraron resultados.</div>
 			) : (
-				<div className="row rows-cols-1 row-cols-md-3 g-3 m-3">
+				<div className="row rows-cols-1 row-cols-md-3 g-3 m-3 animate__animated animate__fadeIn">
 					{filteredDiscos.map((disco) => (
 						<ProductCard key={disco.id} {...disco} />
 					))}
