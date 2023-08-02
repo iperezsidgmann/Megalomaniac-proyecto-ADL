@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
+import 'animate.css';
 
 export const LoginPage = () => {
     const [email, setEmail] = useState('');
@@ -31,7 +32,7 @@ export const LoginPage = () => {
 
     if (isLoggedIn) {
         return (
-            <div className='col-md-6 mx-auto'>
+            <div className='col-md-6 mx-auto animate__animated animate__fadeIn'>
                 <h1 className='mt-3'>Bienvenido!</h1>
 
                 {/* Insertar componente Perfil */}
@@ -44,7 +45,7 @@ export const LoginPage = () => {
     }
 
     return (
-        <div className='col-md-6 mx-auto'>
+        <div className='col-md-6 mx-auto animate__animated animate__fadeIn'>
             <h1 className='mt-3'>Login</h1>
 
             <Form onSubmit={handleSubmit}>
