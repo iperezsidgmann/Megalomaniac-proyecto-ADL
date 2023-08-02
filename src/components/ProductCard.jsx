@@ -18,11 +18,10 @@ export const ProductCard = ({ id, band, album, albumImage, category }) => {
                             albumImage ? (
                                 <img src={discosURL} className="card-img" alt={band} />
                             ) : (
-                                <div className="card-img card-placeholder">No hay imagen</div>
+                                <div className="card-img card-placeholder">La imagen no existe.</div>
                             )
                         }
 
-                        {/* <img src={discosURL} className="card-img" alt={band} /> */}
                     </div>
                     <div className="col-8">
                         <div className="card-body">

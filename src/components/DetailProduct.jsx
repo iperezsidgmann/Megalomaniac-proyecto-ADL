@@ -17,11 +17,6 @@ export const DetailProduct = () => {
         return <div>No se han encontrado detalles del disco.</div>;
     }
 
-    // if (!disco) {
-	// 	return <Navigate to='/' />
-	// }
-
-
     return (
 
         <div className="row mt-5 text-light animate__animated animate__fadeIn">
