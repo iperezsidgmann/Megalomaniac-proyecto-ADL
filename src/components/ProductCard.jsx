@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom'
 
 
-export const ProductCard = ({ id, band, album, album_img, category }) => {
+export const ProductCard = ({ id, band, album, albumImage, category }) => {
 
-    const discosURL = album_img ? `/assets/img/discos/${album_img}.png` : '';
+    const discosURL = albumImage ? `/assets/img/discos/${albumImage}.png` : '';
 
 
     return (
@@ -15,7 +15,7 @@ export const ProductCard = ({ id, band, album, album_img, category }) => {
                     <div className="col-4">
 
                         {
-                            album_img ? (
+                            albumImage ? (
                                 <img src={discosURL} className="card-img" alt={band} />
                             ) : (
                                 <div className="card-img card-placeholder">No hay imagen</div>

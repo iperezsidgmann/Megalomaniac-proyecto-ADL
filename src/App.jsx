@@ -4,6 +4,7 @@ import { Navbar, DetailProduct } from "./components/index";
 import { HomePage, LoginPage, SignupPage } from "./views/index";
 import { discos } from "./data/discos"; // Importa la lista de discos desde data/discos.js
 
+
 function App() {
   // Lógica de búsqueda de discos
   const searchDiscos = (term) => {
@@ -35,4 +36,3 @@ function App() {
 }
 
 export default App;
-
