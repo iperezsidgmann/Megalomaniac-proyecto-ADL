@@ -4,78 +4,84 @@ import { useNavigate } from "react-router-dom";
 import 'animate.css';
 
 export const SignupPage = () => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
-  const [isRegistered, setIsRegistered] = useState(false);
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
+    const [isRegistered, setIsRegistered] = useState(false);
 
-  const navigate = useNavigate(); 
+    const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (name === '' || email === '' || password === '') {
-      setError(true);
-      return;
-    }
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if (name === '' || email === '' || password === '') {
+            setError(true);
+            return;
+        }
 
-    setError(false);
-    setIsRegistered(true);
-    setTimeout(() => {
-      setIsRegistered(false);
-      setName('');
-      setEmail('');
-      setPassword('');
+        setError(false);
+        setIsRegistered(true);
+        setTimeout(() => {
+            setIsRegistered(false);
+            setName('');
+            setEmail('');
+            setPassword('');
 
-      navigate("/home");
-    }, 1500);
-  };
+            navigate("/home");
+        }, 1500);
+    };
 
-  return (
-    <div className='col-md-6 mx-auto animate__animated animate__fadeIn'>
-      <h1 className='mt-3'>SignUp</h1>
+    return (
 
-      <Form onSubmit={handleSubmit}>
-        <Form.Group className="mb-3" controlId="formBasicName">
-          <Form.Label>Nombre</Form.Label>
-          <Form.Control
-            onChange={(e) => setName(e.target.value)}
-            value={name}
-            type="text"
-            placeholder="Ingresa tu nombre" />
-        </Form.Group>
+        <div className='d-flex justify-content-center align-items-center vh-100' >
 
-        <Form.Group className="mb-3" controlId="formBasicEmail">
-          <Form.Label>Email</Form.Label>
-          <Form.Control
-            onChange={(e) => setEmail(e.target.value)}
-            value={email}
-            type="email"
-            placeholder="Ingresa tu email" />
-        </Form.Group>
+            <div className='col-md-3 mx-auto border border-dark rounded p-5 animate__animated animate__fadeIn'>
+                <h1 className='mt-3'>SignUp</h1>
 
-        <Form.Group className="mb-3" controlId="formBasicPassword">
-          <Form.Label>Contraseña</Form.Label>
-          <Form.Control
-            onChange={(e) => setPassword(e.target.value)}
-            value={password}
-            type="password"
-            placeholder="Ingresa tu contraseña" />
-        </Form.Group>
+                <Form onSubmit={handleSubmit}>
+                    <Form.Group className="mb-3" controlId="formBasicName">
+                        <Form.Label>Nombre</Form.Label>
+                        <Form.Control
+                            onChange={(e) => setName(e.target.value)}
+                            value={name}
+                            type="text"
+                            placeholder="Ingresa tu nombre" />
+                    </Form.Group>
 
-        <Button variant="primary btn-dark mb-3" type="submit">
-          Registrarse
-        </Button>
+                    <Form.Group className="mb-3" controlId="formBasicEmail">
+                        <Form.Label>Email</Form.Label>
+                        <Form.Control
+                            onChange={(e) => setEmail(e.target.value)}
+                            value={email}
+                            type="email"
+                            placeholder="Ingresa tu email" />
+                    </Form.Group>
 
-      </Form>
+                    <Form.Group className="mb-3" controlId="formBasicPassword">
+                        <Form.Label>Contraseña</Form.Label>
+                        <Form.Control
+                            onChange={(e) => setPassword(e.target.value)}
+                            value={password}
+                            type="password"
+                            placeholder="Ingresa tu contraseña" />
+                    </Form.Group>
 
-      {error
-        ? <p className="error">Los datos ingresados no son válidos.</p>
-        : null}
+                    <div className="d-flex justify-content-center">
+                        <Button variant="primary btn-dark mb-3" type="submit">
+                            Registrarse
+                        </Button>
+                    </div>
+                </Form>
 
-      {isRegistered
-        ? <p className="success">¡Registro exitoso! Redirigiendo...</p>
-        : null}
-    </div>
-  );
+                {error
+                    ? <p className="error">Los datos ingresados no son válidos.</p>
+                    : null}
+
+                {isRegistered
+                    ? <p className="success">¡Registro exitoso! Redirigiendo...</p>
+                    : null}
+            </div>
+
+        </div>
+    );
 };

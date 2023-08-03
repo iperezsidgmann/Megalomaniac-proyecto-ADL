@@ -1,6 +1,7 @@
 import Carousel from 'react-bootstrap/Carousel';
 import { useState } from 'react';
 import '../styles.css'
+import 'animate.css'
 
 export const Slider = () => {
 
@@ -11,7 +12,7 @@ export const Slider = () => {
     };
 
     return (
-        <Carousel activeIndex={index} onSelect={handleSelect} className='slider-container'>
+        <Carousel activeIndex={index} onSelect={handleSelect} className='slider-container animate__animated animate__fadeIn'>
             <Carousel.Item>
                 <img src='../assets/img/img1_slider.png' alt="First slide" className='slider-image d-block w-100 h-50' />
                 {/* <Carousel.Caption>

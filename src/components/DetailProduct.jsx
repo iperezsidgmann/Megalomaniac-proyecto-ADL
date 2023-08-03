@@ -61,7 +61,7 @@ export const DetailProduct = ({ discos }) => {
                     </li>
                 </ul>
                 <button className="btn btn-dark mt-3" onClick={onNavigateBack}>
-                    Back
+                    Regresar
                 </button>
             </div>
         </div>
