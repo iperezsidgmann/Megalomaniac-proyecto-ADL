@@ -16,3 +16,35 @@ body {
     object-fit: cover;
     /* Asegura que las imágenes se ajusten correctamente en el contenedor */
 }
+.activo{
+    color: #FFFFFF;
+    text-decoration:none;
+    margin: 10px;
+}
+.activo:link{
+    color: #FFFFFF;
+    text-decoration:none;
+    margin: 10px;
+}
+.activo:hover{
+    color: #FFFFFF;
+    background: #333333;
+    text-shadow: #FFF 0px 0px 5px, #FFF 0px 0px 10px, #FFF 0px 0px 15px, #FFFFFF 0px 0px 20px, #FFFFFF 0px 0px 30px, #FFFFFF 0px 0px 40px, #FF2D95 0px 0px 50px, #FFFFFF 0px 0px 75px;
+    color: #FFFFFF;
+    background: #333333;
+    text-decoration:none;
+    margin: 10px;
+  }
+
+  .noactivo:hover{
+    color:white;
+    text-decoration:none;
+    margin: 10px;
+  }
+
+  a{
+    text-decoration:solid;
+    font-weight: bold;
+    color: white;
+    margin: 10px;
+  }
