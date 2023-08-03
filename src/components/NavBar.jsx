@@ -16,11 +16,6 @@ export const Navbar = () => {
         setSearchTerm(searchTermFromURL);
     }, [location]);
 
-    const onLogout = () => {
-        navigate('/login', {
-            replace: true,
-        });
-    };
 
   const handleSearch = (e) => {
   e.preventDefault();
@@ -57,7 +52,7 @@ export const Navbar = () => {
 
                     <span className="nav-item nav-link text-primary">Usuario</span>
 
-                    <NavLink className="nav-item nav-link btn" to="/login" onClick={onLogout}>
+                    <NavLink className="nav-item nav-link btn" to="/login" >
                         Login
                     </NavLink>
 
