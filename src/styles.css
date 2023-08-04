@@ -1,3 +1,8 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
 body {
     background-color: #0f1011;
     color: white;
@@ -6,27 +11,27 @@ body {
 /* Slider */
 .slider-container {
     margin: 0 auto;
-    /* Centra el slider horizontalmente */
 }
 
 .slider-image {
     max-height: 550px;
-    /* Ajusta la altura máxima de las imágenes según tus necesidades */
     width: 100%;
     object-fit: cover;
-    /* Asegura que las imágenes se ajusten correctamente en el contenedor */
 }
-.activo{
+
+.activo {
     color: #FFFFFF;
     text-decoration:none;
     margin: 10px;
 }
-.activo:link{
+
+.activo:link {
     color: #FFFFFF;
     text-decoration:none;
     margin: 10px;
 }
-.activo:hover{
+
+.activo:hover {
     color: #FFFFFF;
     background: #333333;
     text-shadow: #FFF 0px 0px 5px, #FFF 0px 0px 10px, #FFF 0px 0px 15px, #FFFFFF 0px 0px 20px, #FFFFFF 0px 0px 30px, #FFFFFF 0px 0px 40px, #FF2D95 0px 0px 50px, #FFFFFF 0px 0px 75px;
@@ -36,13 +41,13 @@ body {
     margin: 10px;
   }
 
-  .noactivo:hover{
+  .noactivo:hover {
     color:white;
     text-decoration:none;
     margin: 10px;
   }
 
-  a{
+  a {
     text-decoration:solid;
     font-weight: bold;
     color: white;

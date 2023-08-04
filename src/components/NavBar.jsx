@@ -3,65 +3,89 @@ import { useState, useEffect } from 'react';
 import { DropdownMenu } from './index';
 import { Form } from 'react-bootstrap';
 
+
 export const Navbar = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const [searchTerm, setSearchTerm] = useState('');
-    const [showAlert, setShowAlert] = useState(false); // Estado para controlar la aparición de la alerta
+    const [showAlert, setShowAlert] = useState(false);
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-    // Obtener el término de búsqueda de la URL y asignarlo al estado al cargar la página
     useEffect(() => {
         const searchParams = new URLSearchParams(location.search);
         const searchTermFromURL = searchParams.get('search') || '';
         setSearchTerm(searchTermFromURL);
     }, [location]);
 
+    const handleSearch = (e) => {
+        e.preventDefault();
+        if (searchTerm.trim() !== '') {
+            navigate(`/product-list?search=${encodeURIComponent(searchTerm)}`);
+            setShowAlert(false);
+        } else {
+            setShowAlert(location.pathname === '/product-list');
+        }
+    };
 
-  const handleSearch = (e) => {
-  e.preventDefault();
-  // Aquí puedes realizar la lógica de búsqueda con el término ingresado (searchTerm)
-
-  if (searchTerm.trim() !== '') {
-    // Redirigir a la página de ProductList con el término de búsqueda
-    navigate(`/product-list?search=${encodeURIComponent(searchTerm)}`);
-    // Ocultar la alerta cuando se realiza una búsqueda válida
-    setShowAlert(false);
-  } else {
-    // Mostrar alerta solo cuando se realiza una búsqueda activa en la página de ProductList
-    setShowAlert(location.pathname === '/product-list');
-  }
-};
+    const handleLogout = () => {
+        setIsLoggedIn(false);
+    };
 
     return (
-        <nav className="navbar navbar-expand-sm navbar-dark bg-dark p-2">
+        <nav className="navbar navbar-expand-md navbar-dark bg-dark p-1">
             <DropdownMenu />
             <Link className="navbar-brand" to="/">
                 Logo
             </Link>
 
-            <div className="navbar-collapse collapse w-100 order-3 dual-collapse2 d-flex justify-content-end">
+            <div className="navbar-collapse collapse flex-grow-1 order-3 justify-content-end ">
                 <ul className="navbar-nav ml-auto">
-                    <Form onSubmit={handleSearch} className="form-inline my-2 my-lg-0">
-                        <Form.Control
-                            type="text"
-                            placeholder="Buscar"
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                        />
-                    </Form>
+                    <li className="nav-item">
+                        <Form onSubmit={handleSearch} className="form-inline my-2 my-lg-0">
+                            <Form.Control
+                                type="text"
+                                placeholder="Buscar"
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                            />
+                        </Form>
+                    </li>
 
-                    <span className="nav-item nav-link text-primary">Usuario</span>
+                    {/* Mostrar el nombre del usuario si está logueado */}
+                    {isLoggedIn && (
+                        <li className="nav-item">
+                            <span className="nav-link text-primary">
+                                Nombre del Usuario
+                            </span>
+                        </li>
+                    )}
 
-                    <NavLink className="nav-item nav-link btn" to="/login" >
-                        Login
-                    </NavLink>
+                    {/* Mostrar los enlaces "Login" y "SignUp" solo si el usuario no está logueado */}
+                    {!isLoggedIn && (
+                        <>
+                            <li className="nav-item">
+                                <NavLink className="nav-link btn" to="/login">
+                                    Login
+                                </NavLink>
+                            </li>
+                            <li className="nav-item">
+                                <NavLink className="nav-link btn" to="/signup">
+                                    SignUp
+                                </NavLink>
+                            </li>
+                        </>
+                    )}
 
-                    <NavLink className="nav-item nav-link btn" to="/signup">
-                        SignUp
-                    </NavLink>
+                    {/* Mostrar el botón "Cerrar sesión" solo si el usuario está logueado */}
+                    {isLoggedIn && (
+                        <li className="nav-item">
+                            <button className="nav-link btn" onClick={handleLogout}>
+                                Cerrar sesión
+                            </button>
+                        </li>
+                    )}
                 </ul>
             </div>
-            {/* Mostrar la alerta solo cuando showAlert es verdadero y el término de búsqueda esté vacío */}
             {showAlert && searchTerm.trim() === '' && (
                 <div>No se encontraron resultados.</div>
             )}
