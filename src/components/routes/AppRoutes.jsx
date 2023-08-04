@@ -7,6 +7,7 @@ import RockPage from "../../pages/RockPage";
 import PopPage from "../../pages/PopPage";
 import FolkPage from "../../pages/FolkPage";
 import MetalPage from "../../pages/MetalPage";
+import NotFound from "../../pages/NotFound";
 
 export const AppRoutes = () => {
   // Lógica de búsqueda de discos
@@ -28,7 +29,7 @@ export const AppRoutes = () => {
       <Navbar discos={memoizedDiscos} searchFunction={memoizedSearchDiscos} />
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="*" element={<HomePage />} />
+        <Route path="*" element={<NotFound />} />
         <Route path="/home" element={<HomePage />} />
         <Route path="/rockpage" element={<RockPage />} />
         <Route path="/poppage" element={<PopPage />} />
@@ -36,7 +37,7 @@ export const AppRoutes = () => {
         <Route path="/metalpage" element={<MetalPage />} />
 
         {/* Pasamos discos como una prop al componente DetailProduct */}
-        <Route
+      <Route
           path="/detail/:id"
           element={<DetailProduct discos={memoizedDiscos} />}
         />
