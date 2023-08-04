@@ -35,7 +35,7 @@ export const DetailProduct = ({ discos }) => {
         <div className="col-md-10 mx-auto row mt-5 text-light animate__animated animate__fadeIn">
             <div className="col-4">
                 <img
-                    src={`/assets/img/discos/${disco.albumImage}.png`}
+                    src={disco.albumImage}
                     alt={disco.band}
                     className="img-thumbnail"
                 />
@@ -48,17 +48,17 @@ export const DetailProduct = ({ discos }) => {
                         <b>Album:</b> {disco.album}
                     </li>
                     <li className="list-group-item">
-                        <b>Año:</b> {/* {disco.album} */}
-                        <p>Pendiente</p>
+                        <b>Año:</b>  {disco.albumYear} 
+                        
                     </li>
 
                     <li className="list-group-item">
                         <b>Categoría:</b> {disco.category}
                     </li>
-                    <li className="list-group-item">
+                    {/* <li className="list-group-item">
                         <b className="mt-3">Integrantes:</b>
                         <p>Pendiente</p>
-                    </li>
+                    </li> */}
                 </ul>
                 <button className="btn btn-dark mt-3" onClick={onNavigateBack}>
                     Regresar

@@ -6,7 +6,6 @@ export const ProductCard = ({ id, band, album, albumImage, category }) => {
 
     const discosURL = albumImage ? `/assets/img/discos/${albumImage}.png` : '';
 
-
     return (
 
         <div className="col animate__animated animate__fadeIn">
@@ -14,15 +13,8 @@ export const ProductCard = ({ id, band, album, albumImage, category }) => {
 
                 <div className="row no-gutters">
                     <div className="col-4">
-
-                        {
-                            albumImage ? (
-                                <img src={discosURL} className="card-img" alt={band} />
-                            ) : (
-                                <div className="card-img card-placeholder">La imagen no existe.</div>
-                            )
-                        }
-
+                        <img src={albumImage} className="card-img" alt={band} />
+                        
                     </div>
                     <div className="col-8">
                         <div className="card-body">
