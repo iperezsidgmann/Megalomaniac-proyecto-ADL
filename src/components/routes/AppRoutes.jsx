@@ -1,13 +1,12 @@
 import { useMemo } from "react";
 import { Routes, Route } from "react-router-dom";
-import { Navbar, DetailProduct } from '../index';
+import { Navbar, DetailProduct, Footer } from '../index';
 import { HomePage, PanelPage } from "../../views/index";
 import { discos } from "../../data/discos";
 import RockPage from "../../pages/RockPage";
 import PopPage from "../../pages/PopPage";
 import FolkPage from "../../pages/FolkPage";
 import MetalPage from "../../pages/MetalPage";
-import Footer from "../Footer";
 
 export const AppRoutes = () => {
     // Lógica de búsqueda de discos
