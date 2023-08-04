@@ -7,6 +7,7 @@ import RockPage from "../../pages/RockPage";
 import PopPage from "../../pages/PopPage";
 import FolkPage from "../../pages/FolkPage";
 import MetalPage from "../../pages/MetalPage";
+import NotFound from "../../pages/NotFound";
 
 export const AppRoutes = () => {
     // Lógica de búsqueda de discos
@@ -22,6 +23,7 @@ export const AppRoutes = () => {
     // Usamos useMemo para evitar recalcular los resultados de búsqueda en cada renderizado
     const memoizedDiscos = useMemo(() => discos, []);
     const memoizedSearchDiscos = useMemo(() => searchDiscos, []);
+
 
     return (
         <>
@@ -44,5 +46,5 @@ export const AppRoutes = () => {
             </Routes>
         </>
     );
-}
+
 
