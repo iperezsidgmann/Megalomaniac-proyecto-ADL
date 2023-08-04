@@ -12,6 +12,5 @@ export const AppRouter = () => {
                 <Route path="*" element={<AppRoutes/>} />
             </Routes>
         </>
-
     )
-}
+};
