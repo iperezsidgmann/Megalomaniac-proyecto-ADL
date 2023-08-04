@@ -4,7 +4,9 @@ import { discos } from '../data/discos';
 import { DropdownMenu } from './index';
 import { Form } from 'react-bootstrap';
 
+
 export const Navbar = () => {
+
   const navigate = useNavigate();
   const location = useLocation();
   const [searchTerm, setSearchTerm] = useState('');
