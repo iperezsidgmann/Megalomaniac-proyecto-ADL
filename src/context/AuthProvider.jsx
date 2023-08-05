@@ -7,6 +7,9 @@ export const AuthProvider = ({ children }) => {
     const [error, setError] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [userId, setUserId] = useState('');
+    const [name, setName] = useState('');
+    const [isRegistered, setIsRegistered] = useState(false);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -17,32 +20,41 @@ export const AuthProvider = ({ children }) => {
             return;
         }
 
+        setError(false);
+        setIsRegistered(true);
+
         // Simula una autenticación exitosa después de 1 segundo
         setTimeout(() => {
+            setIsRegistered(false);
             setIsLoggedIn(true);
             setError('');
+            setUserId('123');
             setEmail('');
             setPassword('');
-        }, 1000);
+
+        }, 1500);
     };
 
     const handleLogout = () => {
         setIsLoggedIn(false);
     };
 
-    // Se proporcionan las variables y funciones necesarias en el valor del contexto
     const authContextValue = {
         isLoggedIn,
+        userId,
+        name,
+        setName,
         error,
         email,
-        setEmail, // Agregar setEmail al objeto authContextValue
+        setEmail,
         password,
-        setPassword, // Agregar setPassword al objeto authContextValue
+        isRegistered,
+        setIsRegistered,
+        setPassword,
         handleSubmit,
         handleLogout,
     };
 
-    // Retorna el proveedor con el contexto
     return <AuthContext.Provider value={authContextValue}>{children}</AuthContext.Provider>;
 };
 

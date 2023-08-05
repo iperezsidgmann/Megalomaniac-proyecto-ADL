@@ -1,8 +1,9 @@
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { MyContext } from '../context/MyContext';
 
-const RockPage = () => {
+export const RockPage = () => {
     const {rock} = useContext(MyContext)
+    
   return (
     <div>
         <h3 class="text-center pt-2">Todo del Rock</h3>
@@ -61,4 +62,3 @@ const RockPage = () => {
   )
 }
 
-export default RockPage

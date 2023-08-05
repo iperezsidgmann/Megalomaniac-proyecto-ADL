@@ -4,20 +4,17 @@ import { useNavigate } from 'react-router-dom';
 import { PanelPage } from './PanelPage';
 import 'animate.css';
 
-
 export const LoginPage = () => {
-
     const { isLoggedIn, error, email, setEmail, password, setPassword, handleSubmit, handleLogout } = useAuth();
-
     const navigate = useNavigate(); // Hook para manejar la redirección
 
     const handleRedirectToHome = () => {
-        navigate('/home'); // Redirige a la página /home al hacer clic en el botón
+        navigate('/'); // Redirige a la página /home al hacer clic en el botón
     };
 
-
     if (isLoggedIn) {
-        return ( <PanelPage handleLogout={handleLogout} handleRedirectToHome={handleRedirectToHome}/>
+        return (
+            <PanelPage handleLogout={handleLogout} handleRedirectToHome={handleRedirectToHome} />
         );
     }
 
