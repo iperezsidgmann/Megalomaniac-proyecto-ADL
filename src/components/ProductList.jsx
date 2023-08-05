@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { discos } from '../data/discos';
 import { ProductCard } from './index';
@@ -15,76 +15,62 @@ export const ProductList = () => {
     const location = useLocation();
     const searchTerm = new URLSearchParams(location.search).get('search');
     const [filteredDiscos, setFilteredDiscos] = useState([]);
-    const [resultsFound, setResultsFound] = useState(true); // Estado para controlar si se encontraron resultados
+    const [selectedCategory, setSelectedCategory] = useState(null);
 
     useEffect(() => {
-        // Verificar si searchTerm no es null antes de filtrar los discos
+        let filtered = discos;
+
         if (searchTerm) {
-            // Filtrar los discos según el término de búsqueda
-            const filtered = discos.filter((disco) => {
+            filtered = discos.filter((disco) => {
                 return (
                     disco.album.toLowerCase().includes(searchTerm.toLowerCase()) ||
                     disco.band.toLowerCase().includes(searchTerm.toLowerCase()) ||
                     disco.category.toLowerCase().includes(searchTerm.toLowerCase())
                 );
             });
-            setFilteredDiscos(filtered);
 
-            // Verificar si se encontraron resultados
-            setResultsFound(filtered.length > 0);
-
-            // Mostrar alerta si no hay resultados
             if (filtered.length === 0) {
                 window.alert('No se encontraron resultados.');
             }
-        } else {
-            // Si searchTerm es null, mostrar todos los discos
-            setFilteredDiscos(discos);
-
-            // Mostrar que se encontraron resultados, ya que no hay término de búsqueda
-            setResultsFound(true);
         }
-    }, [searchTerm]);
 
-    useEffect(() => {
-        // Filtrar los discos según la categoría seleccionada
-        if (location.pathname === '/') {
-            // Si no hay una categoría seleccionada, mostrar todos los discos
-            setFilteredDiscos(discos);
-        } else {
-            const category = location.pathname.slice(1); // Eliminar el primer / de la ruta
-            const filteredByCategory = discos.filter((disco) =>
-                disco.category.toLowerCase() === category.toLowerCase()
+        if (selectedCategory) {
+            filtered = filtered.filter(
+                (disco) => disco.category.toLowerCase() === selectedCategory.toLowerCase()
             );
-            setFilteredDiscos(filteredByCategory);
         }
-    }, [location.pathname]);
+
+        setFilteredDiscos(filtered);
+    }, [searchTerm, selectedCategory]);
+
+    const handleCategoryClick = (category) => {
+        setSelectedCategory(category);
+    };
 
     return (
-        <div className="col-md-10 mt-4 mx-auto animate__animated animate__fadeIn">
+        <div className="container mt-4 animate__animated animate__fadeIn">
             <h2>Discografías</h2>
             <hr />
 
-            <div className="row justify-content-center">
-                {/* Columna de categorías */}
+            <div className="row">
                 <div className="col-md-2 col-sm-4">
-                    <h4>Categorías</h4>
-                    <ul>
-                        <li onClick={() => setFilteredDiscos(discos)}>
+                    <h4 className="text-light">Categorías</h4>
+                    <ul className="list-group bg-dark border-dark">
+                        <li
+                            className={`list-group-item list-group-item-action bg-dark text-light border-dark ${
+                                selectedCategory === null ? 'active' : ''
+                            }`}
+                            onClick={() => handleCategoryClick(null)}
+                        >
                             Mostrar todos
                         </li>
                         {navigationItems.map((item) => (
                             <li
                                 key={item.title}
-                                onClick={() =>
-                                    setFilteredDiscos(
-                                        discos.filter(
-                                            (disco) =>
-                                                disco.category.toLowerCase() ===
-                                                item.title.toLowerCase()
-                                        )
-                                    )
-                                }
+                                className={`list-group-item list-group-item-action bg-dark text-light border-dark ${
+                                    selectedCategory === item.title ? 'active' : ''
+                                }`}
+                                onClick={() => handleCategoryClick(item.title)}
                             >
                                 {item.title}
                             </li>
@@ -92,12 +78,11 @@ export const ProductList = () => {
                     </ul>
                 </div>
 
-                {/* Área principal de la lista de discos */}
                 <div className="col-md-10 col-sm-8">
-                    {!resultsFound ? (
+                    {filteredDiscos.length === 0 ? (
                         <div>No se encontraron resultados.</div>
                     ) : (
-                        <div className="row rows-cols-1 row-cols-md-3 g-3 m-1 animate__animated animate__fadeIn">
+                        <div className="row row-cols-1 row-cols-md-3 g-3 m-1 animate__animated animate__fadeIn">
                             {filteredDiscos.map((disco) => (
                                 <ProductCard key={disco.id} {...disco} />
                             ))}
@@ -108,5 +93,3 @@ export const ProductList = () => {
         </div>
     );
 };
-
-export default ProductList;

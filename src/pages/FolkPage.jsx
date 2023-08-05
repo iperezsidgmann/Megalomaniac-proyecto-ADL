@@ -1,9 +1,9 @@
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { MyContext } from '../context/MyContext';
-import { Link } from 'react-router-dom'
 
-const FolkPage = () => {
+export const FolkPage = () => {
     const {folk} = useContext(MyContext)
+
   return (
     <div>
         <h3 class="text-center pt-2">Todo del Folk</h3>
@@ -52,5 +52,3 @@ const FolkPage = () => {
     </div>  /* div Inicial */
   )
 }
-
-export default FolkPage

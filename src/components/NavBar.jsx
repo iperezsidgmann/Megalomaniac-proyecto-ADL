@@ -6,15 +6,15 @@ import { useAuth } from '../context/AuthProvider';
 
 
 export const Navbar = () => {
-    const { isLoggedIn, handleLogout } = useAuth(); // Consumir el contexto de autenticación
+    const { isLoggedIn, handleLogout, name } = useAuth(); // Consumir el contexto de autenticación
 
     const navigate = useNavigate();
     const location = useLocation();
+    
     const [searchTerm, setSearchTerm] = useState('');
 
     const handleSearch = (e) => {
         e.preventDefault();
-        // Aquí puedes realizar la lógica de búsqueda con el término ingresado (searchTerm)
 
         if (searchTerm.trim() !== '') {
             // Redirigir a la página de ProductList con el término de búsqueda
@@ -30,6 +30,11 @@ export const Navbar = () => {
         const searchTermFromURL = searchParams.get('search') || '';
         setSearchTerm(searchTermFromURL);
     }, [location]);
+
+    // Condición para ocultar la barra de navegación en las páginas de Login y Signup
+    if (location.pathname === '/login' || location.pathname === '/signup') {
+        return null;
+    }
 
     return (
         <nav className="navbar navbar-expand-sm navbar-dark bg-dark p-2">
@@ -56,7 +61,7 @@ export const Navbar = () => {
                     <>
                         <li className="nav-item">
                             <span className="nav-link text-primary">
-                                Usuario
+                                {name || "Usuario"}
                             </span>
                         </li>
                         <li className="nav-item">

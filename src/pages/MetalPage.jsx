@@ -1,7 +1,7 @@
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { MyContext } from '../context/MyContext';
 
-const MetalPage = () => {
+export const MetalPage = () => {
     const {metal} = useContext(MyContext)
   return (
     <div>
@@ -55,5 +55,3 @@ const MetalPage = () => {
     </div>  /* div Inicial */
   )
 }
-
-export default MetalPage

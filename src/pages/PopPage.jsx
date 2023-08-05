@@ -1,7 +1,7 @@
 import React, { useContext } from 'react'
 import { MyContext } from '../context/MyContext';
 
-const PopPage = () => {
+export const PopPage = () => {
     const {pop} = useContext(MyContext)
   return (
     <div>
@@ -55,4 +55,3 @@ const PopPage = () => {
   )
 }
 
-export default PopPage

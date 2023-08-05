@@ -1,6 +1,5 @@
-import React from 'react'
 
-const NotFound = () => {
+export const NotFound = () => {
   return (
     <div>
         <h1 className="text-center pt-6">La página o producto que estas buscando No existe</h1>
@@ -12,4 +11,3 @@ const NotFound = () => {
   )
 }
 
-export default NotFound

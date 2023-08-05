@@ -1,12 +1,12 @@
-import React, { useEffect } from "react";
-import { Button } from "react-bootstrap";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
+import { useAuth } from "../context/AuthProvider";
 
-export const PanelPage = ({ handleLogout, handleRedirectToHome }) => {
-    const navigate = useNavigate();
-    const location = useLocation(); 
-    const searchParams = new URLSearchParams(location.search);
-    const name = searchParams.get('name') || 'Usuario'; 
+export const PanelPage = ({ handleRedirectToHome }) => {
+
+    const { name } = useAuth();
+    const location = useLocation();
+    const queryName = new URLSearchParams(location.search).get('name') || 'Melómano';
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -19,7 +19,7 @@ export const PanelPage = ({ handleLogout, handleRedirectToHome }) => {
     return (
         <div className="d-flex justify-content-center align-items-center vh-100">
             <div className="col-md-6 text-center animate__animated animate__fadeIn" style={{ marginTop: "-35vh" }}>
-                <h1 className="mt-4 mb-3">Bienvenido {name}!</h1>
+                <h1 className="mt-4 mb-3">Bienvenido {name || queryName}!</h1>
             </div>
         </div>
     );
