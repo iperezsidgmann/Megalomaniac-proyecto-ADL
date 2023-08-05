@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import 'animate.css';
@@ -9,7 +9,6 @@ export const SignupPage = () => {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [isRegistered, setIsRegistered] = useState(false);
-
     const navigate = useNavigate();
 
     const handleSubmit = (e) => {
@@ -27,7 +26,8 @@ export const SignupPage = () => {
             setEmail('');
             setPassword('');
 
-            navigate("/home");
+            // Redirige a PanelPage pasando el parámetro 'name'
+            navigate(`/panel?name=${encodeURIComponent(name)}`);
         }, 1500);
     };
 
