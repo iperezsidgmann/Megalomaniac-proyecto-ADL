@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom';
 import { discos } from '../data/discos';
 import { ProductCard } from './index';
 import 'animate.css';
+import { ListGroup } from 'react-bootstrap';
 
 const navigationItems = [
     { title: 'Rock', path: '/rockpage' },
@@ -55,27 +56,27 @@ export const ProductList = () => {
             <div className="row">
                 <div className="col-md-2 col-sm-4">
                     <h4 className="text-light">Categorías</h4>
-                    <ul className="list-group bg-dark border-dark">
-                        <li
-                            className={`list-group-item list-group-item-action bg-dark text-light border-dark ${
-                                selectedCategory === null ? 'active' : ''
-                            }`}
+                    <ListGroup className="list-group">
+                        <ListGroup.Item
+                            action variant="dark"
+                            className={`list-group-item list-group-item-action  ${selectedCategory === null ? 'active' : ''
+                                }`}
                             onClick={() => handleCategoryClick(null)}
                         >
                             Mostrar todos
-                        </li>
+                        </ListGroup.Item>
                         {navigationItems.map((item) => (
-                            <li
+                            <ListGroup.Item
+                                action variant="dark"
                                 key={item.title}
-                                className={`list-group-item list-group-item-action bg-dark text-light border-dark ${
-                                    selectedCategory === item.title ? 'active' : ''
-                                }`}
+                                className={`list-group-item list-group-item-action ${selectedCategory === item.title ? 'active' : ''
+                                    }`}
                                 onClick={() => handleCategoryClick(item.title)}
                             >
                                 {item.title}
-                            </li>
+                            </ListGroup.Item>
                         ))}
-                    </ul>
+                    </ListGroup>
                 </div>
 
                 <div className="col-md-10 col-sm-8">

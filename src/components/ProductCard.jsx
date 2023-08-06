@@ -1,9 +1,11 @@
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import 'animate.css';
+import { useAuth } from '../context/AuthProvider';
 
-export const ProductCard = ({ id, band, album, albumImage, category, isUserCreated, onAddFavorite, onRemoveFavorite, onDelete }) => {
+export const ProductCard = ({ id, band, album, albumImage, category, onAddFavorite, onRemoveFavorite, onDelete }) => {
     const [isFavorite, setIsFavorite] = useState(false);
+    const { isLoggedIn } = useAuth();
 
     const handleFavoriteClick = () => {
         setIsFavorite(!isFavorite);
@@ -32,22 +34,24 @@ export const ProductCard = ({ id, band, album, albumImage, category, isUserCreat
                                     <small className="text-light">Categoría: {category} </small>
                                 </p>
                             </div>
-                            <div className="mt-auto text-center">
-                                <button className="btn btn-light" onClick={handleFavoriteClick}>
-                                    {isFavorite ? 'Quitar de Favoritos' : 'Agregar a Favoritos'}
-                                    <span className={`ml-2 ${isFavorite ? 'text-warning' : 'text-secondary'}`}>
-                                        {isFavorite ? <i className="fas fa-star"></i> : <i className="far fa-star"></i>}
-                                    </span>
-                                </button>
-                                {!isUserCreated && ( // Mostrar el botón de eliminar solo si NO es un disco creado por el usuario
-                                    <button className="btn btn-danger ml-2" onClick={onDelete}>
+                            <div className="d-flex justify-content-between align-items-center mt-3">
+                                {isLoggedIn && ( // Mostrar el botón de eliminar solo si NO es un disco creado por el usuario
+                                    <button className="btn btn-danger" onClick={onDelete}>
                                         Eliminar Disco
                                         <i className="fas fa-trash ml-2"></i>
                                     </button>
                                 )}
-                                <Link to={`/detail/${id}`} className="btn btn-light ml-2">
+                                <Link to={`/detail/${id}`} className="btn btn-light">
                                     Detalles
                                 </Link>
+                                {isLoggedIn && (
+                                    <button className="btn btn-light" onClick={handleFavoriteClick}>
+                                        {isFavorite ? 'Quitar de Favoritos' : 'Agregar a Favoritos'}
+                                        <span className={`ml-2 ${isFavorite ? 'text-warning' : 'text-secondary'}`}>
+                                            {isFavorite ? <i className="fas fa-star"></i> : <i className="far fa-star"></i>}
+                                        </span>
+                                    </button>
+                                )}
                             </div>
                         </div>
                     </div>
@@ -56,4 +60,3 @@ export const ProductCard = ({ id, band, album, albumImage, category, isUserCreat
         </div>
     );
 };
-

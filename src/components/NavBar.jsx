@@ -1,27 +1,23 @@
+import React, { useState, useEffect } from 'react';
 import { Link, NavLink, useNavigate, useLocation } from 'react-router-dom';
-import { useState, useEffect } from 'react';
-import { DropdownMenu } from './index';
-import { Form } from 'react-bootstrap';
+import { Form, NavDropdown } from 'react-bootstrap';
 import { useAuth } from '../context/AuthProvider';
-
+import { Dropdown, DropdownButton } from 'react-bootstrap';
+import { DropdownMenu } from './index'; // Importa el componente DropdownMenu
 
 export const Navbar = () => {
-    const { isLoggedIn, handleLogout, name } = useAuth(); // Consumir el contexto de autenticación
-
+    const { isLoggedIn, name } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
-
     const [searchTerm, setSearchTerm] = useState('');
 
     const handleSearch = (e) => {
         e.preventDefault();
 
         if (searchTerm.trim() !== '') {
-            // Redirigir a la página de ProductList con el término de búsqueda
             navigate(`/product-list?search=${encodeURIComponent(searchTerm)}`);
         } else {
-            // Mostrar la alerta solo cuando se realiza una búsqueda con texto
-            alert('La página o producto que buscas no existe :( ');
+            alert('La página o producto que buscas no existe :(');
         }
     };
 
@@ -31,20 +27,19 @@ export const Navbar = () => {
         setSearchTerm(searchTermFromURL);
     }, [location]);
 
-    // Condición para ocultar la barra de navegación en las páginas de Login y Signup
     if (location.pathname === '/login' || location.pathname === '/signup') {
         return null;
     }
 
     return (
-        <nav className="navbar navbar-expand-sm navbar-dark bg-dark p-2">
-            <DropdownMenu />
+        <nav className="navbar navbar-expand-sm navbar-dark bg-dark p-2 sticky-top">
+            <DropdownMenu /> 
             <Link className="navbar-brand" to="/">
-                <img src="assets/img/logo/logo3.png" alt="Logo" style={{ width: '40%', height: 'auto' }} />
+                <img src="assets/img/logo/logo3.png" alt="Logo" style={{ width: '30%', height: 'auto' }} />
             </Link>
 
             <div className="d-flex align-items-center justify-content-center flex-grow-1">
-                {/* Dejar el espacio vacío en el centro */}
+                {/* Espacio vacío en el centro */}
             </div>
 
             <Form onSubmit={handleSearch} className="form-inline my-2 my-lg-0">
@@ -60,22 +55,17 @@ export const Navbar = () => {
                 {isLoggedIn ? (
                     <>
                         <li className="nav-item">
-                            <NavLink className="nav-link" to="/mis-discos">
-                                Mis discos
-                            </NavLink>
-                        </li>
-                        <li className="nav-item">
-                            <NavLink className="nav-link" to="/agregar-disco">
-                                Agregar disco
-                            </NavLink>
-                        </li>
-                        <NavLink className="nav-link" to="/favoritos">
-                            Favoritos
-                        </NavLink>
-                        <li className="nav-item">
-                            <span className="nav-link text-primary">
-                                {name || "Usuario"}
-                            </span>
+                            <NavDropdown id="dropdown-user" menuVariant="dark" title={name || "Usuario"}>
+                                <NavLink className="dropdown-item" to="/mis-discos">
+                                    Mis discos
+                                </NavLink>
+                                <NavLink className="dropdown-item" to="/agregar-disco">
+                                    Agregar disco
+                                </NavLink>
+                                <NavLink className="dropdown-item" to="/favoritos">
+                                    Favoritos
+                                </NavLink>
+                            </NavDropdown>
                         </li>
                         <li className="nav-item">
                             <Link to="/logout" className="nav-link btn">
