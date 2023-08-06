@@ -2,15 +2,17 @@ import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import 'animate.css';
 
-export const ProductCard = ({ id, band, album, albumImage, category }) => {
+export const ProductCard = ({ id, band, album, albumImage, category, isUserCreated, onAddFavorite, onRemoveFavorite, onDelete }) => {
     const [isFavorite, setIsFavorite] = useState(false);
 
     const handleFavoriteClick = () => {
         setIsFavorite(!isFavorite);
         if (isFavorite) {
             window.alert('Disco quitado de Favoritos.');
+            onRemoveFavorite();
         } else {
             window.alert('Disco agregado a Favoritos.');
+            onAddFavorite();
         }
     };
 
@@ -37,6 +39,12 @@ export const ProductCard = ({ id, band, album, albumImage, category }) => {
                                         {isFavorite ? <i className="fas fa-star"></i> : <i className="far fa-star"></i>}
                                     </span>
                                 </button>
+                                {!isUserCreated && ( // Mostrar el botón de eliminar solo si NO es un disco creado por el usuario
+                                    <button className="btn btn-danger ml-2" onClick={onDelete}>
+                                        Eliminar Disco
+                                        <i className="fas fa-trash ml-2"></i>
+                                    </button>
+                                )}
                                 <Link to={`/detail/${id}`} className="btn btn-light ml-2">
                                     Detalles
                                 </Link>

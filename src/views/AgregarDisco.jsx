@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthProvider';
 import { discos } from '../data/discos';
@@ -31,14 +31,16 @@ export const AgregarDisco = () => {
         };
 
         discos.push(newDisco);
-
-        navigate('/mis-discos');
+        
+        navigate(`/mis-discos?category=${category}`, { state: { newDisco } });
     };
 
     if (!isLoggedIn) {
         navigate('/login');
         return null;
     }
+    const categorias = ['Rock', 'Pop', 'Folk', 'Metal'];
+
 
     return (
         <div className="container mt-5">
@@ -79,14 +81,20 @@ export const AgregarDisco = () => {
                 </div>
                 <div className="form-group">
                     <label htmlFor="category">Categoría:</label>
-                    <input
-                        type="text"
+                    <select
                         className="form-control"
                         id="category"
                         value={category}
                         onChange={(e) => setCategory(e.target.value)}
                         required // Campo obligatorio
-                    />
+                    >
+                        <option value="" disabled>Seleccionar Categoría</option>
+                        {categorias.map((cat) => (
+                            <option key={cat} value={cat}>
+                                {cat}
+                            </option>
+                        ))}
+                    </select>
                 </div>
                 <button type="submit" className="btn btn-primary">
                     Agregar Disco
