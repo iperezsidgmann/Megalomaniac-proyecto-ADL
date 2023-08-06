@@ -1,18 +1,27 @@
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
+import { useState } from 'react';
 import 'animate.css';
 
-
 export const ProductCard = ({ id, band, album, albumImage, category }) => {
+    const [isFavorite, setIsFavorite] = useState(false);
 
+    const handleFavoriteClick = () => {
+        setIsFavorite(!isFavorite);
+        if (isFavorite) {
+            window.alert('Disco quitado de Favoritos.');
+        } else {
+            window.alert('Disco agregado a Favoritos.');
+        }
+    };
 
     return (
         <div className="col-md-4 col-sm-6 col-12 mb-3 animate__animated animate__fadeIn">
             <div className="card bg-dark text-light h-100 mb-1">
                 <div className="row no-gutters">
-                    <div className=" d-flex align-items-center justify-content-center"> {/* Ajusta el tamaño de la columna */}
+                    <div className="d-flex align-items-center justify-content-center">
                         <img src={albumImage} className="card-img" alt={band} style={{ width: '100%', height: '350px', objectFit: 'cover' }} />
                     </div>
-                    <div className=""> {/* Ajusta el tamaño de la columna */}
+                    <div className="">
                         <div className="card-body d-flex flex-column justify-content-between h-100">
                             <div>
                                 <h3 className="card-title">{band}</h3>
@@ -22,7 +31,13 @@ export const ProductCard = ({ id, band, album, albumImage, category }) => {
                                 </p>
                             </div>
                             <div className="mt-auto text-center">
-                                <Link to={`/detail/${id}`} className="btn btn-light">
+                                <button className="btn btn-light" onClick={handleFavoriteClick}>
+                                    {isFavorite ? 'Quitar de Favoritos' : 'Agregar a Favoritos'}
+                                    <span className={`ml-2 ${isFavorite ? 'text-warning' : 'text-secondary'}`}>
+                                        {isFavorite ? <i className="fas fa-star"></i> : <i className="far fa-star"></i>}
+                                    </span>
+                                </button>
+                                <Link to={`/detail/${id}`} className="btn btn-light ml-2">
                                     Detalles
                                 </Link>
                             </div>
@@ -31,10 +46,6 @@ export const ProductCard = ({ id, band, album, albumImage, category }) => {
                 </div>
             </div>
         </div>
+    );
+};
 
-
-
-
-
-    )
-}
