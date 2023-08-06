@@ -10,7 +10,7 @@ export const Navbar = () => {
 
     const navigate = useNavigate();
     const location = useLocation();
-    
+
     const [searchTerm, setSearchTerm] = useState('');
 
     const handleSearch = (e) => {
@@ -40,7 +40,7 @@ export const Navbar = () => {
         <nav className="navbar navbar-expand-sm navbar-dark bg-dark p-2">
             <DropdownMenu />
             <Link className="navbar-brand" to="/">
-                Logo
+                <img src="assets/img/logo/logo3.png" alt="Logo" style={{ width: '40%', height: 'auto' }} />
             </Link>
 
             <div className="d-flex align-items-center justify-content-center flex-grow-1">
@@ -60,14 +60,27 @@ export const Navbar = () => {
                 {isLoggedIn ? (
                     <>
                         <li className="nav-item">
+                            <NavLink className="nav-link" to="/mis-discos">
+                                Mis discos
+                            </NavLink>
+                        </li>
+                        <li className="nav-item">
+                            <NavLink className="nav-link" to="/agregar-disco">
+                                Agregar disco
+                            </NavLink>
+                        </li>
+                        <NavLink className="nav-link" to="/favoritos">
+                            Favoritos
+                        </NavLink>
+                        <li className="nav-item">
                             <span className="nav-link text-primary">
                                 {name || "Usuario"}
                             </span>
                         </li>
                         <li className="nav-item">
-                            <span className="nav-link btn" onClick={handleLogout}>
+                            <Link to="/logout" className="nav-link btn">
                                 Logout
-                            </span>
+                            </Link>
                         </li>
                     </>
                 ) : (
@@ -88,4 +101,3 @@ export const Navbar = () => {
         </nav>
     );
 };
-
