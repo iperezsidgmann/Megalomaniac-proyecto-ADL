@@ -2,6 +2,8 @@ import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import 'animate.css';
 import { useAuth } from '../context/AuthProvider';
+import Heart from './Heart';
+import iconDelete from '../components/iconDelete.jsx';
 
 export const ProductCard = ({ id, band, album, albumImage, category, onAddFavorite, onRemoveFavorite, onDelete }) => {
     const [isFavorite, setIsFavorite] = useState(false);
@@ -19,6 +21,7 @@ export const ProductCard = ({ id, band, album, albumImage, category, onAddFavori
     };
 
     return (
+        
         <div className="col-md-4 col-sm-6 col-12 mb-3 animate__animated animate__fadeIn">
             <div className="card bg-dark text-light h-100 mb-1">
                 <div className="row no-gutters">
@@ -36,17 +39,17 @@ export const ProductCard = ({ id, band, album, albumImage, category, onAddFavori
                             </div>
                             <div className="d-flex justify-content-between align-items-center mt-3">
                                 {isLoggedIn && ( // Mostrar el botón de eliminar solo si NO es un disco creado por el usuario
-                                    <button className="btn btn-danger" onClick={onDelete}>
-                                        Eliminar Disco
+                                    <button  className="btn btn-danger" onClick={onDelete} >
+                                         <iconDelete/>Eliminar Disco
                                         <i className="fas fa-trash ml-2"></i>
                                     </button>
-                                )}
+                                )} 
                                 <Link to={`/detail/${id}`} className="btn btn-light">
                                     Detalles
                                 </Link>
                                 {isLoggedIn && (
                                     <button className="btn btn-light" onClick={handleFavoriteClick}>
-                                        {isFavorite ? 'Quitar de Favoritos' : 'Agregar a Favoritos'}
+                                        {isFavorite ? <Heart filled = {true}/> : <Heart filled = {false}/>}
                                         <span className={`ml-2 ${isFavorite ? 'text-warning' : 'text-secondary'}`}>
                                             {isFavorite ? <i className="fas fa-star"></i> : <i className="far fa-star"></i>}
                                         </span>
