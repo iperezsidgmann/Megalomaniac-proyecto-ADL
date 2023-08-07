@@ -1,25 +1,28 @@
 import { Form, Button } from "react-bootstrap";
 import { useAuth } from "../context/AuthProvider";
+import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import 'animate.css';
 
 
 export const SignupPage = () => {
-    const { userId, error, email, setEmail, password, setPassword, handleSubmit, isRegistered, name, setName } = useAuth();
+    const { error, email, setEmail, password, setPassword, handleSubmit, isRegistered, name, setName } = useAuth();
 
-    // Agregamos un efecto que redirige al usuario cuando se registra con éxito
+    const navigate = useNavigate(); 
+    
+    // Agregar un efecto para redirigir después de que se registre
     useEffect(() => {
         if (isRegistered) {
             setTimeout(() => {
-                window.location.href = `/panel/${userId}`; 
+                navigate('/'); // Redirigir a la página principal
             }, 1500);
         }
-    }, [isRegistered, userId]);
+    }, [isRegistered, navigate]);
 
     return (
         <div className='d-flex justify-content-center align-items-center vh-100' >
             <div className='col-md-3 mx-auto border border-dark rounded p-5 animate__animated animate__fadeIn'>
-                <h1 className='mt-3'>SignUp</h1>
+                <h1 className='mt-3'>Regístrate</h1>
                 <Form onSubmit={handleSubmit}>
                     <Form.Group className="mb-3" controlId="formBasicName">
                         <Form.Label>Nombre</Form.Label>

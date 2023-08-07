@@ -7,7 +7,6 @@ export const AuthProvider = ({ children }) => {
     const [error, setError] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [userId, setUserId] = useState('');
     const [name, setName] = useState('');
     const [isRegistered, setIsRegistered] = useState(false);
 
@@ -28,7 +27,6 @@ export const AuthProvider = ({ children }) => {
             setIsRegistered(false);
             setIsLoggedIn(true);
             setError('');
-            setUserId('123');
             setEmail('');
             setPassword('');
 
@@ -41,7 +39,6 @@ export const AuthProvider = ({ children }) => {
 
     const authContextValue = {
         isLoggedIn,
-        userId,
         name,
         setName,
         error,

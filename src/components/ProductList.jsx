@@ -2,9 +2,8 @@ import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { discos } from '../data/discos';
 import { ProductCard } from './index';
-import 'animate.css';
 import { ListGroup } from 'react-bootstrap';
-
+import 'animate.css';
 
 
 const navigationItems = [
@@ -19,7 +18,7 @@ export const ProductList = () => {
     const searchTerm = new URLSearchParams(location.search).get('search');
     const [filteredDiscos, setFilteredDiscos] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState(null);
-
+    
     useEffect(() => {
         let filtered = discos;
 
@@ -86,7 +85,7 @@ export const ProductList = () => {
                     ) : (
                         <div className="row row-cols-1 row-cols-md-3 g-3 m-1 animate__animated animate__fadeIn">
                             {filteredDiscos.map((disco) => (
-                                <ProductCard key={disco.id} {...disco} />
+                                <ProductCard  key={disco.id} {...disco} />
                             ))}
                         </div>
                     )}

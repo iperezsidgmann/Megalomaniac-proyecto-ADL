@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthProvider';
 import { discos } from '../data/discos';
+import 'animate.css';
 
 export const AgregarDisco = () => {
     const { isLoggedIn } = useAuth();
@@ -43,10 +44,10 @@ export const AgregarDisco = () => {
 
 
     return (
-        <div className="container mt-5">
+        <div className="container mt-5 col-md-3 animate__animated animate__fadeIn">
             <h2>Agregar Disco</h2>
             <form onSubmit={handleSubmit}>
-                <div className="form-group">
+                <div className="form-group mb-3">
                     <label htmlFor="band">Banda:</label>
                     <input
                         type="text"
@@ -57,7 +58,7 @@ export const AgregarDisco = () => {
                         required // Campo obligatorio
                     />
                 </div>
-                <div className="form-group">
+                <div className="form-group mb-3">
                     <label htmlFor="album">Álbum:</label>
                     <input
                         type="text"
@@ -68,7 +69,7 @@ export const AgregarDisco = () => {
                         required // Campo obligatorio
                     />
                 </div>
-                <div className="form-group">
+                <div className="form-group mb-3">
                     <label htmlFor="albumImage">URL de la imagen del álbum:</label>
                     <input
                         type="text"
@@ -79,7 +80,7 @@ export const AgregarDisco = () => {
                         required // Campo obligatorio
                     />
                 </div>
-                <div className="form-group">
+                <div className="form-group mb-3">
                     <label htmlFor="category">Categoría:</label>
                     <select
                         className="form-control"
@@ -96,7 +97,7 @@ export const AgregarDisco = () => {
                         ))}
                     </select>
                 </div>
-                <button type="submit" className="btn btn-primary">
+                <button type="submit" className="btn btn-dark mt-2">
                     Agregar Disco
                 </button>
             </form>
