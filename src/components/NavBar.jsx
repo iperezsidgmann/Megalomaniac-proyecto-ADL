@@ -1,70 +1,93 @@
+import React, { useState, useEffect } from 'react';
 import { Link, NavLink, useNavigate, useLocation } from 'react-router-dom';
-import { useState, useEffect } from 'react';
-import { DropdownMenu } from './index';
-import { Form } from 'react-bootstrap';
+import { Form, NavDropdown } from 'react-bootstrap';
+import { useAuth } from '../context/AuthProvider';
+import { Dropdown, DropdownButton } from 'react-bootstrap';
+import { DropdownMenu } from './index'; // Importa el componente DropdownMenu
 
 export const Navbar = () => {
+    const { isLoggedIn, name } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
     const [searchTerm, setSearchTerm] = useState('');
-    const [showAlert, setShowAlert] = useState(false); // Estado para controlar la aparición de la alerta
 
-    // Obtener el término de búsqueda de la URL y asignarlo al estado al cargar la página
+    const handleSearch = (e) => {
+        e.preventDefault();
+
+        if (searchTerm.trim() !== '') {
+            navigate(`/product-list?search=${encodeURIComponent(searchTerm)}`);
+        } else {
+            alert('La página o producto que buscas no existe :(');
+        }
+    };
+
     useEffect(() => {
         const searchParams = new URLSearchParams(location.search);
         const searchTermFromURL = searchParams.get('search') || '';
         setSearchTerm(searchTermFromURL);
     }, [location]);
 
-
-  const handleSearch = (e) => {
-  e.preventDefault();
-  // Aquí puedes realizar la lógica de búsqueda con el término ingresado (searchTerm)
-
-  if (searchTerm.trim() !== '') {
-    // Redirigir a la página de ProductList con el término de búsqueda
-    navigate(`/product-list?search=${encodeURIComponent(searchTerm)}`);
-    // Ocultar la alerta cuando se realiza una búsqueda válida
-    setShowAlert(false);
-  } else {
-    // Mostrar alerta solo cuando se realiza una búsqueda activa en la página de ProductList
-    setShowAlert(location.pathname === '/product-list');
-  }
-};
+    if (location.pathname === '/login' || location.pathname === '/signup') {
+        return null;
+    }
 
     return (
-        <nav className="navbar navbar-expand-sm navbar-dark bg-dark p-2">
-            <DropdownMenu />
+        <nav className="navbar navbar-expand-sm navbar-dark bg-dark p-2 sticky-top">
+            <DropdownMenu /> 
             <Link className="navbar-brand" to="/">
-                Logo
+                <img src="assets/img/logo/logo3.png" alt="Logo" style={{ width: '30%', height: 'auto' }} />
             </Link>
 
-            <div className="navbar-collapse collapse w-100 order-3 dual-collapse2 d-flex justify-content-end">
-                <ul className="navbar-nav ml-auto">
-                    <Form onSubmit={handleSearch} className="form-inline my-2 my-lg-0">
-                        <Form.Control
-                            type="text"
-                            placeholder="Buscar"
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                        />
-                    </Form>
-
-                    <span className="nav-item nav-link text-primary">Usuario</span>
-
-                    <NavLink className="nav-item nav-link btn" to="/login" >
-                        Login
-                    </NavLink>
-
-                    <NavLink className="nav-item nav-link btn" to="/signup">
-                        SignUp
-                    </NavLink>
-                </ul>
+            <div className="d-flex align-items-center justify-content-center flex-grow-1">
+                {/* Espacio vacío en el centro */}
             </div>
-            {/* Mostrar la alerta solo cuando showAlert es verdadero y el término de búsqueda esté vacío */}
-            {showAlert && searchTerm.trim() === '' && (
-                <div>No se encontraron resultados.</div>
-            )}
+
+            <Form onSubmit={handleSearch} className="form-inline my-2 my-lg-0">
+                <Form.Control
+                    type="text"
+                    placeholder="Buscar"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                />
+            </Form>
+
+            <ul className="navbar-nav ml-auto align-items-center">
+                {isLoggedIn ? (
+                    <>
+                        <li className="nav-item">
+                            <NavDropdown id="dropdown-user" menuVariant="dark" title={name || "Usuario"}>
+                                <NavLink className="dropdown-item" to="/mis-discos">
+                                    Mis discos
+                                </NavLink>
+                                <NavLink className="dropdown-item" to="/agregar-disco">
+                                    Agregar disco
+                                </NavLink>
+                                <NavLink className="dropdown-item" to="/favoritos">
+                                    Favoritos
+                                </NavLink>
+                            </NavDropdown>
+                        </li>
+                        <li className="nav-item">
+                            <Link to="/logout" className="nav-link btn">
+                                Logout
+                            </Link>
+                        </li>
+                    </>
+                ) : (
+                    <>
+                        <li className="nav-item">
+                            <NavLink className="nav-link btn" to="/login">
+                                Login
+                            </NavLink>
+                        </li>
+                        <li className="nav-item">
+                            <NavLink className="nav-link btn" to="/signup">
+                                SignUp
+                            </NavLink>
+                        </li>
+                    </>
+                )}
+            </ul>
         </nav>
     );
 };

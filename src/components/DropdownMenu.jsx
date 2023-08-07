@@ -1,11 +1,20 @@
-import { AiOutlineMenu } from 'react-icons/ai'
+import { AiOutlineMenu } from 'react-icons/ai';
 import { Container, Nav, Navbar, NavDropdown } from 'react-bootstrap';
+import { NavLink, useLocation } from 'react-router-dom';
+
+const navigationItems = [
+    { title: 'Rock', path: '/rockpage' },
+    { title: 'Pop', path: '/poppage' },
+    { title: 'Folk', path: '/folkpage' },
+    { title: 'Metal', path: '/metalpage' },
+];
 
 export const DropdownMenu = () => {
+    const location = useLocation();
+
     return (
         <Navbar variant="dark" bg="dark" expand="lg">
             <Container fluid>
-                <Navbar.Toggle aria-controls="navbar-dark-example" />
                 <Navbar.Collapse id="navbar-dark-example">
                     <Nav>
                         <NavDropdown
@@ -13,18 +22,20 @@ export const DropdownMenu = () => {
                             title={<AiOutlineMenu />}
                             menuVariant="dark"
                         >
-                            <NavDropdown.Item href="#action/3.1">Rock</NavDropdown.Item>
-                            <NavDropdown.Item href="#action/3.2">Pop</NavDropdown.Item>
-                            <NavDropdown.Item href="#action/3.3">Folk</NavDropdown.Item>
-                            <NavDropdown.Item href="#action/3.3">Metal</NavDropdown.Item>
+                            {navigationItems.map((item, index) => (
+                                <NavDropdown.Item key={index}>
+                                    <NavLink
+                                        className={`nav-link ${location.pathname === item.path ? 'active' : ''}`}
+                                        to={item.path}
+                                    >
+                                        {item.title}
+                                    </NavLink>
+                                </NavDropdown.Item>
+                            ))}
                         </NavDropdown>
                     </Nav>
                 </Navbar.Collapse>
             </Container>
         </Navbar>
     );
-}
-
-
-
-
+};
