@@ -5,6 +5,8 @@ import { ProductCard } from './index';
 import 'animate.css';
 import { ListGroup } from 'react-bootstrap';
 
+
+
 const navigationItems = [
     { title: 'Rock', path: '/rockpage' },
     { title: 'Pop', path: '/poppage' },
@@ -52,7 +54,6 @@ export const ProductList = () => {
         <div className="container mt-4 animate__animated animate__fadeIn">
             <h2>Discografías</h2>
             <hr />
-
             <div className="row">
                 <div className="col-md-2 col-sm-4">
                     <h4 className="text-light">Categorías</h4>
