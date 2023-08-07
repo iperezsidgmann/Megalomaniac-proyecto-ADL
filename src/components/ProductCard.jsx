@@ -1,27 +1,32 @@
-import { Link } from 'react-router-dom';
 import { useState } from 'react';
-import 'animate.css';
+import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthProvider';
-import Heart from './Heart';
-import iconDelete from '../components/iconDelete.jsx';
+import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
+import { useFavorite } from '../context/FavoriteProvider';
+import 'animate.css';
 
-export const ProductCard = ({ id, band, album, albumImage, category, onAddFavorite, onRemoveFavorite, onDelete }) => {
+
+export const ProductCard = ({ id, band, album, albumImage, category }) => {
+
     const [isFavorite, setIsFavorite] = useState(false);
-    const { isLoggedIn } = useAuth();
+    const { isLoggedIn, isRegistered } = useAuth();
+    const { onRemoveFavorite, onAddFavorite } = useFavorite();
 
     const handleFavoriteClick = () => {
+        if (!isLoggedIn) {
+            return;
+        }
+
         setIsFavorite(!isFavorite);
+
         if (isFavorite) {
-            window.alert('Disco quitado de Favoritos.');
             onRemoveFavorite();
         } else {
-            window.alert('Disco agregado a Favoritos.');
             onAddFavorite();
         }
     };
 
     return (
-        
         <div className="col-md-4 col-sm-6 col-12 mb-3 animate__animated animate__fadeIn">
             <div className="card bg-dark text-light h-100 mb-1">
                 <div className="row no-gutters">
@@ -38,22 +43,20 @@ export const ProductCard = ({ id, band, album, albumImage, category, onAddFavori
                                 </p>
                             </div>
                             <div className="d-flex justify-content-between align-items-center mt-3">
-                                {isLoggedIn && ( // Mostrar el botón de eliminar solo si NO es un disco creado por el usuario
-                                    <button  className="btn btn-danger" onClick={onDelete} >
-                                         <iconDelete/>Eliminar Disco
-                                        <i className="fas fa-trash ml-2"></i>
-                                    </button>
-                                )} 
                                 <Link to={`/detail/${id}`} className="btn btn-light">
                                     Detalles
                                 </Link>
-                                {isLoggedIn && (
-                                    <button className="btn btn-light" onClick={handleFavoriteClick}>
-                                        {isFavorite ? <Heart filled = {true}/> : <Heart filled = {false}/>}
+                                {(isLoggedIn || isRegistered) && ( 
+                                    <div onClick={handleFavoriteClick}>
+                                        {isFavorite ? (
+                                            <AiFillHeart className="text-danger" style={{ fontSize: '2rem' }} />
+                                        ) : (
+                                            <AiOutlineHeart style={{ fontSize: '2rem' }} />
+                                        )}
                                         <span className={`ml-2 ${isFavorite ? 'text-warning' : 'text-secondary'}`}>
                                             {isFavorite ? <i className="fas fa-star"></i> : <i className="far fa-star"></i>}
                                         </span>
-                                    </button>
+                                    </div>
                                 )}
                             </div>
                         </div>
@@ -63,3 +66,4 @@ export const ProductCard = ({ id, band, album, albumImage, category, onAddFavori
         </div>
     );
 };
+

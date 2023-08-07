@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { Form, NavDropdown } from 'react-bootstrap';
 import { useAuth } from '../context/AuthProvider';
-import { Dropdown, DropdownButton } from 'react-bootstrap';
-import { DropdownMenu } from './index'; // Importa el componente DropdownMenu
+import { DropdownMenu } from './index'; 
+import logo3 from '../../assets/img/logo/logo3.png'
 
 export const Navbar = () => {
-    const { isLoggedIn, name } = useAuth();
+    const { isLoggedIn, name, isRegistered } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
     const [searchTerm, setSearchTerm] = useState('');
@@ -35,7 +35,7 @@ export const Navbar = () => {
         <nav className="navbar navbar-expand-sm navbar-dark bg-dark p-2 sticky-top">
             <DropdownMenu /> 
             <Link className="navbar-brand" to="/">
-                <img src="assets/img/logo/logo3.png" alt="Logo" style={{ width: '30%', height: 'auto' }} />
+                <img src={logo3} alt="Logo" style={{ width: '30%', height: 'auto' }} />
             </Link>
 
             <div className="d-flex align-items-center justify-content-center flex-grow-1">
@@ -52,7 +52,7 @@ export const Navbar = () => {
             </Form>
 
             <ul className="navbar-nav ml-auto align-items-center">
-                {isLoggedIn ? (
+                {(isLoggedIn || isRegistered) ? (
                     <>
                         <li className="nav-item">
                             <NavDropdown id="dropdown-user" menuVariant="dark" title={name || "Usuario"}>
