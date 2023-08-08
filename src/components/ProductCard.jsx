@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthProvider';
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
@@ -10,7 +10,11 @@ export const ProductCard = ({ id, band, album, albumImage, category }) => {
 
     const [isFavorite, setIsFavorite] = useState(false);
     const { isLoggedIn, isRegistered } = useAuth();
-    const { onRemoveFavorite, onAddFavorite } = useFavorite();
+    const { onRemoveFavorite, onAddFavorite,favoriteItems } = useFavorite();
+
+    useEffect(() => {
+        setIsFavorite(favoriteItems.includes(id));
+    }, [favoriteItems, id]);
 
     const handleFavoriteClick = () => {
         if (!isLoggedIn) {
@@ -20,9 +24,11 @@ export const ProductCard = ({ id, band, album, albumImage, category }) => {
         setIsFavorite(!isFavorite);
 
         if (isFavorite) {
-            onRemoveFavorite();
+            setIsFavorite(false);
+            onRemoveFavorite(id);
         } else {
-            onAddFavorite();
+            setIsFavorite(true);
+            onAddFavorite(id);
         }
     };
 
@@ -51,7 +57,7 @@ export const ProductCard = ({ id, band, album, albumImage, category }) => {
                                         {isFavorite ? (
                                             <AiFillHeart className="text-danger" style={{ fontSize: '2rem' }} />
                                         ) : (
-                                            <AiOutlineHeart style={{ fontSize: '2rem' }} />
+                                            <AiOutlineHeart  style={{ fontSize: '2rem' }} />
                                         )}
                                         <span className={`ml-2 ${isFavorite ? 'text-warning' : 'text-secondary'}`}>
                                             {isFavorite ? <i className="fas fa-star"></i> : <i className="far fa-star"></i>}
