@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { ProductCard } from '../components';
 import { useLocation } from 'react-router-dom';
 
@@ -17,7 +17,7 @@ export const MisDiscos = () => {
     };
 
     const agregarDisco = (disco) => {
-        setMisDiscos([...misDiscos, disco]);
+        setMisDiscos([...misDiscos, disco]); // Actualiza el estado de misDiscos
     };
 
     const eliminarDisco = (id) => {
@@ -31,6 +31,7 @@ export const MisDiscos = () => {
         }
     }, [location.state]);
 
+    
     return (
         <div className="container mt-5">
             <h2>Mis Discos</h2>
@@ -47,7 +48,7 @@ export const MisDiscos = () => {
                         isUserCreated={disco.isUserCreated}
                         onAddFavorite={() => agregarFavorito(disco)}
                         onRemoveFavorite={() => quitarFavorito(disco.id)}
-                        onDelete={() => eliminarDisco(disco.id)} // Agrega esta prop para manejar la eliminación del disco
+                        onDelete={() => eliminarDisco(disco.id)}
                     />
                 ))}
             </div>

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthProvider';
 import { discos } from '../data/discos';
+import { Form, Button } from 'react-bootstrap';
 import 'animate.css';
 
 export const AgregarDisco = () => {
@@ -32,7 +33,8 @@ export const AgregarDisco = () => {
         };
 
         discos.push(newDisco);
-        
+
+        // Redirigir a la página "Mis Discos" solo después de agregar el álbum
         navigate(`/mis-discos?category=${category}`, { state: { newDisco } });
     };
 
@@ -40,54 +42,46 @@ export const AgregarDisco = () => {
         navigate('/login');
         return null;
     }
+
     const categorias = ['Rock', 'Pop', 'Folk', 'Metal'];
 
-
     return (
-        <div className="container mt-5 col-md-3 animate__animated animate__fadeIn">
+        <div className="container mt-5 col-md-4 animate__animated animate__fadeIn">
             <h2>Agregar Disco</h2>
-            <form onSubmit={handleSubmit}>
-                <div className="form-group mb-3">
-                    <label htmlFor="band">Banda:</label>
-                    <input
+            <Form onSubmit={handleSubmit}>
+                <Form.Group className="mb-3">
+                    <Form.Label>Banda:</Form.Label>
+                    <Form.Control
                         type="text"
-                        className="form-control"
-                        id="band"
                         value={band}
                         onChange={(e) => setBand(e.target.value)}
-                        required // Campo obligatorio
+                        required
                     />
-                </div>
-                <div className="form-group mb-3">
-                    <label htmlFor="album">Álbum:</label>
-                    <input
+                </Form.Group>
+                <Form.Group className="mb-3">
+                    <Form.Label>Álbum:</Form.Label>
+                    <Form.Control
                         type="text"
-                        className="form-control"
-                        id="album"
                         value={album}
                         onChange={(e) => setAlbum(e.target.value)}
-                        required // Campo obligatorio
+                        required
                     />
-                </div>
-                <div className="form-group mb-3">
-                    <label htmlFor="albumImage">URL de la imagen del álbum:</label>
-                    <input
+                </Form.Group>
+                <Form.Group className="mb-3">
+                    <Form.Label>URL de la imagen del álbum:</Form.Label>
+                    <Form.Control
                         type="text"
-                        className="form-control"
-                        id="albumImage"
                         value={albumImage}
                         onChange={(e) => setAlbumImage(e.target.value)}
-                        required // Campo obligatorio
+                        required
                     />
-                </div>
-                <div className="form-group mb-3">
-                    <label htmlFor="category">Categoría:</label>
-                    <select
-                        className="form-control"
-                        id="category"
+                </Form.Group>
+                <Form.Group className="mb-3">
+                    <Form.Label>Categoría:</Form.Label>
+                    <Form.Select
                         value={category}
                         onChange={(e) => setCategory(e.target.value)}
-                        required // Campo obligatorio
+                        required
                     >
                         <option value="" disabled>Seleccionar Categoría</option>
                         {categorias.map((cat) => (
@@ -95,12 +89,12 @@ export const AgregarDisco = () => {
                                 {cat}
                             </option>
                         ))}
-                    </select>
-                </div>
-                <button type="submit" className="btn btn-dark mt-2">
+                    </Form.Select>
+                </Form.Group>
+                <Button type="submit" variant="dark" className="mt-2">
                     Agregar Disco
-                </button>
-            </form>
+                </Button>
+            </Form>
         </div>
     );
 };

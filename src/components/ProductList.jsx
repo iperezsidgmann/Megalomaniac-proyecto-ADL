@@ -79,7 +79,7 @@ export const ProductList = () => {
                     </ListGroup>
                 </div>
 
-                <div className="col-md-10 col-sm-8">
+                <div className="col-md-10 col-sm-8 mt-3">
                     {filteredDiscos.length === 0 ? (
                         <div>No se encontraron resultados.</div>
                     ) : (
