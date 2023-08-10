@@ -47,7 +47,7 @@ export const AgregarDisco = () => {
 
     return (
         <div className="container mt-5 col-md-4 animate__animated animate__fadeIn">
-            <h2>Agregar Disco</h2>
+            <h2 className='mb-3'>Agregar Disco</h2>
             <Form onSubmit={handleSubmit}>
                 <Form.Group className="mb-3">
                     <Form.Label>Banda:</Form.Label>
