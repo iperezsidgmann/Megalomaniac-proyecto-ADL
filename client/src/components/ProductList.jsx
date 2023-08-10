@@ -1,10 +1,9 @@
 import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { discos } from '../data/discos';
 import { ProductCard } from './index';
 import { ListGroup } from 'react-bootstrap';
+import { useSearchContext } from '../context/SearchProvider';
 import 'animate.css';
-
 
 const navigationItems = [
     { title: 'Rock', path: '/rockpage' },
@@ -16,24 +15,15 @@ const navigationItems = [
 export const ProductList = () => {
     const location = useLocation();
     const searchTerm = new URLSearchParams(location.search).get('search');
+    const searchFunction = useSearchContext(); 
     const [filteredDiscos, setFilteredDiscos] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState(null);
-    
+
     useEffect(() => {
-        let filtered = discos;
+        let filtered = searchFunction(""); // Inicialmente, obtén todos los discos
 
         if (searchTerm) {
-            filtered = discos.filter((disco) => {
-                return (
-                    disco.album.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                    disco.band.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                    disco.category.toLowerCase().includes(searchTerm.toLowerCase())
-                );
-            });
-
-            if (filtered.length === 0) {
-                window.alert('No se encontraron resultados.');
-            }
+            filtered = searchFunction(searchTerm); // Usa la función de búsqueda del contexto
         }
 
         if (selectedCategory) {
@@ -43,7 +33,7 @@ export const ProductList = () => {
         }
 
         setFilteredDiscos(filtered);
-    }, [searchTerm, selectedCategory]);
+    }, [searchTerm, selectedCategory, searchFunction]);
 
     const handleCategoryClick = (category) => {
         setSelectedCategory(category);

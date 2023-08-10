@@ -13,19 +13,20 @@ export const Navbar = () => {
 
     const handleSearch = (e) => {
         e.preventDefault();
-
+    
         if (searchTerm.trim() !== '') {
             navigate(`/product-list?search=${encodeURIComponent(searchTerm)}`);
+            setSearchTerm(''); // Limpiar el término de búsqueda después de realizar la búsqueda
         } else {
-            alert('La página o producto que buscas no existe :(');
+            navigate(`/product-list`); // Redirigir a la lista completa sin ningún término de búsqueda
         }
     };
-
+        
     useEffect(() => {
         const searchParams = new URLSearchParams(location.search);
         const searchTermFromURL = searchParams.get('search') || '';
         setSearchTerm(searchTermFromURL);
-    }, [location]);
+    }, [location.search]);
 
     if (location.pathname === '/login' || location.pathname === '/signup') {
         return null;
