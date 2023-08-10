@@ -5,7 +5,7 @@ import { PanelPage } from './PanelPage';
 import 'animate.css';
 
 export const LoginPage = () => {
-    const { isLoggedIn, error, email, setEmail, password, setPassword, handleSubmit, handleLogout } = useAuth();
+    const { isLoggedIn, error, email, setEmail, password, setPassword, handleSubmit, handleLogin, handleLogout } = useAuth();
     const navigate = useNavigate(); // Hook para manejar la redirección
 
     const handleRedirectToHome = () => {
@@ -42,7 +42,7 @@ export const LoginPage = () => {
                         />
                     </Form.Group>
                     <div className="d-flex justify-content-center">
-                        <Button variant='primary btn-dark mb-3' type='submit'>
+                        <Button onClick={handleLogin} variant='primary btn-dark mb-3' type='submit'>
                             Enviar
                         </Button>
                     </div>
