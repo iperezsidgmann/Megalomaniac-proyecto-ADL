@@ -3,6 +3,7 @@ import { Navbar, Footer, DetailProduct } from './components/index';
 import { HomePage, LoginPage, PanelPage, SignupPage, MisDiscos, AgregarDisco, Favoritos, LogoutPage } from "./views/index";
 import { RockPage, PopPage, FolkPage, MetalPage } from './pages/index';
 import { useSearchContext } from "./context/SearchProvider";
+import { discos } from "./data/discos";
 
 export const AppContent = () => {
     const searchFunction = useSearchContext();
@@ -22,7 +23,7 @@ export const AppContent = () => {
                     <Route path="/poppage" element={<PopPage />} />
                     <Route path="/folkpage" element={<FolkPage />} />
                     <Route path="/metalpage" element={<MetalPage />} />
-                    <Route path="/detail/:id" element={<DetailProduct discos={memoizedDiscos} />} />
+                    <Route path="/detail/:id" element={<DetailProduct discos={discos} />} />
                     <Route path="/mis-discos" element={<MisDiscos />} />
                     <Route path="/agregar-disco" element={<AgregarDisco />} />
                     <Route path="/favoritos" element={<Favoritos />} />
@@ -33,4 +34,3 @@ export const AppContent = () => {
         </>
     );
 };
-
