@@ -72,4 +72,3 @@ export const ProductCard = ({ id, band, album, albumImage, category }) => {
         </div>
     );
 };
-
