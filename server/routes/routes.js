@@ -5,8 +5,8 @@ const router = express.Router();
 const pool = require("../db/conexion");
 
 
-const { registrarUsuario, ingresoPosts, ingresoFavoritos} = require('../consultas/consultas');
-const { checkCredentialsExists } = require('../middlewares/middleware');
+const { registrarUsuario, ingresoPosts, ingresoFavoritos, obtenerDatosDeUsuario, verificarCredenciales} = require('../consultas/consultas');
+const { checkCredentialsExists, tokenVerification } = require('../middlewares/middleware');
 
 router.get('/', (req, res) => {
     res.send('Bienvenido a MegaloManiac');
@@ -14,7 +14,7 @@ router.get('/', (req, res) => {
 
 //Insertar nuevo usuario
 
-router.post('/usuarios', async(req, res) => {
+router.post('/usuarios', checkCredentialsExists, async(req, res) => {
     try {
         const usuario = req.body;
         await registrarUsuario(usuario);
@@ -50,12 +50,9 @@ router.post('/favoritos', async(req, res) => {
     }
 })
 
-
-//Acceso a Usuario
-
 //Visualizar un usuario
 
-router.get('/usuarios', async(req, res) => {
+router.get('/usuarios', checkCredentialsExists, async(req, res) => {
     try {
         const consulta = "SELECT * FROM usuarios";
         const {rows} =  await pool.query(consulta)
@@ -102,5 +99,31 @@ router.get('/favoritos/:id', async(req, res) => {
     }
 })
 
+
+//Login o Acceso a Usuario
+
+router.get("/usuarios", tokenVerification, async (req, res) => {
+  try {
+    const token = req.header("Authorization").split("Bearer ")[1];
+    const { email } = jwt.decode(token);
+    const usuario = await obtenerDatosDeUsuario(email);
+    res.json(usuario);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+});
+
+router.post("/login", async (req, res) => {
+    try {
+      const { email, password } = req.body;
+      await verificarCredenciales(email, password);
+      const token = jwt.sign({ email }, process.env.SECRET_KEY)
+      //res.send(token);
+      res.send('Usuario Logueado correctamente');
+    } catch (error) {
+     res.status(500).send(error.message);
+     console.log(error.message)
+    }
+  });
 
 module.exports = router

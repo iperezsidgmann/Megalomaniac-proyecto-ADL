@@ -4,7 +4,7 @@ const bcrypt = require("bcryptjs");
 const registrarUsuario = async (usuario) => {
     let { email, password, img } = usuario;
     const passwordEncriptada =  bcrypt.hashSync(password);
-    password = passwordEncriptada;
+    password = passwordEncriptada; 
     const values = [email, passwordEncriptada, img];
     const consultas = "INSERT INTO usuarios VALUES (DEFAULT, $1, $2, $3)";
     await pool.query(consultas, values);
@@ -18,6 +18,26 @@ const ingresoPosts = async (posts) => {
   
 }
 
+const obtenerDatosDeUsuario = async (email) => {
+    const values = [email];
+    const consulta = "SELECT * FROM usuarios WHERE email = $1";
+  
+    const {
+      rows: [usuario],
+      rowCount,
+    } = await pool.query(consulta, values);
+  
+    if (!rowCount) {
+      throw {
+        code: 404,
+        message: "No se encontró ningún usuario con este email",
+      };
+    }
+  
+    delete usuario.password;
+    return usuario;
+  };
+
 const ingresoFavoritos = async (favoritos) => {
     let{ idusuario, idpost } = favoritos;
     const values = [idusuario, idpost];
@@ -25,8 +45,21 @@ const ingresoFavoritos = async (favoritos) => {
     await pool.query(consultaFavoritos, values);
 }
 
+const verificarCredenciales = async (email, password) => {
+    const values = [email];
+    const consulta = "SELECT * FROM usuarios WHERE us_email = $1";
+    const { rows: [usuario], rowCount, } = await pool.query(consulta, values);
+    const { us_password: passwordEncriptada } = usuario;
+    const passwordEsCorrecta = bcrypt.compareSync(password, passwordEncriptada);
+       
+    if (!passwordEsCorrecta || !rowCount)
+      throw { code: 401, message: "Email o contraseña incorrecta" };
+  };
+  
 module.exports = {
     registrarUsuario,
     ingresoPosts,
-    ingresoFavoritos
+    ingresoFavoritos,
+    verificarCredenciales,
+    obtenerDatosDeUsuario
 }
