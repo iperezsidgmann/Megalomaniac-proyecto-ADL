@@ -20,8 +20,8 @@ router.post('/usuarios', checkCredentialsExists, async(req, res) => {
         await registrarUsuario(usuario);
         res.send('Usuario registrado');
     } catch (error) {
-        //res.status(500).send(error)
-        console.log(error)
+        res.status(500).send(error)
+        //console.log(error)
     }
 })
 
@@ -32,8 +32,8 @@ router.post('/posts', async(req, res) => {
         await ingresoPosts(posts);
         res.send('Post agregado');
     } catch (error) {
-        //res.status(500).send(error)
-        console.log(error)        
+        res.status(500).send(error)
+        //console.log(error)        
     }
 
 })
@@ -45,8 +45,8 @@ router.post('/favoritos', async(req, res) => {
         await ingresoFavoritos(favoritos);
         res.send('Agregado a Favoritos');
     } catch (error) {
-        //res.status(500).send(error)
-        console.log(error)        
+        res.status(500).send(error)
+        //console.log(error)        
     }
 })
 
@@ -58,7 +58,8 @@ router.get('/usuarios', checkCredentialsExists, async(req, res) => {
         const {rows} =  await pool.query(consulta)
         res.json(rows);
     } catch (error) {
-        console.log(error.message)
+        res.status(500).send(error)
+        //console.log(error.message)
     }
 })
 
@@ -70,7 +71,23 @@ router.get('/posts', async(req, res) => {
         const {rows} =  await pool.query(consulta)
         res.json(rows);
     } catch (error) {
-        console.log(error.message)
+        res.status(500).send(error)
+        //console.log(error.message)
+    }
+})
+
+//Visualizar discos por Id
+
+router.get('/posts/:id', async(req, res) => {
+    try {
+        const {id} = req.params;
+        const consulta = "SELECT * FROM posts where ps_id = $1";
+        const values = [id];
+        const {rows} =  await pool.query(consulta, values)
+        res.json(rows);
+    } catch (error) {
+        res.status(500).send(error)
+        //console.log(error.message)
     }
 })
 
@@ -95,7 +112,8 @@ router.get('/favoritos/:id', async(req, res) => {
         const {rows} =  await pool.query(consulta, values)
         res.json(rows);
     } catch (error) {
-        console.log(error.message)
+        res.status(500).send(error)
+        //console.log(error.message)
     }
 })
 
@@ -122,8 +140,56 @@ router.post("/login", async (req, res) => {
       res.send('Usuario Logueado correctamente');
     } catch (error) {
      res.status(500).send(error.message);
-     console.log(error.message)
+     //console.log(error.message)
     }
   });
+
+//Actualizacion de Posts (disco)
+
+router.put('/posts/:id', async(req, res) => {
+    try {
+        const { id } = req.params;
+        const { banda, album, albumImage, albumYear, categoria} = req.body;
+        const consulta = 'UPDATE posts SET ps_band = $2, ps_album = $3, ps_albumimage = $4, ps_albumyear = $5, ps_category = $6 WHERE ps_id = $1';
+        const values = [id, banda, album, albumImage, albumYear, categoria];
+        const { rows } = await pool.query(consulta, values)
+        res.send('Datos Actualizados')
+    
+    } catch (error) {
+        res.status(500).send(error)
+        //console.log(error.message)
+    }
+}) 
+
+//Eliminacion de Posts (disco)
+
+router.delete('/posts/:id', async(req, res) => {
+    try {
+        const { id } = req.params;
+        const consulta = 'DELETE FROM posts WHERE ps_id = $1';
+        const values = [id];
+        const { rows } = await pool.query(consulta, values)
+        res.send('Post Eliminado')
+    } catch (error) {
+        console.log(error.message)
+    }
+})
+
+//Eliminacion de Favoritos 
+
+router.delete('/favoritos/:id', async(req, res) => {
+    try {
+        const { id } = req.params;
+        const consulta = 'DELETE FROM favoritos WHERE fv_id = $1';
+        const values = [id];
+        console.log(consulta)
+        console.log(values)
+        const { rows } = await pool.query(consulta, values)
+        res.send('Favorito Eliminado')
+    } catch (error) {
+        console.log(error.message)
+    }
+})
+
 
 module.exports = router

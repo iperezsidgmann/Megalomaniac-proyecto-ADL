@@ -11,13 +11,28 @@ create table usuarios(
 create table posts(
 	ps_id serial primary key,
 	ps_us_id int,
-	ps_titulo varchar(50),
-	ps_descripcion varchar(100),
-	ps_img varchar(200)
+	ps_band varchar(100),
+	ps_album varchar(100),
+	ps_albumimage varchar (255),
+	ps_albumyear varchar(4),
+	ps_category varchar(100)
 )
+
 
 create table favoritos(
 	fv_id serial primary key,
 	fv_us_id int,
 	fv_ps_id int
 )
+
+alter table posts
+add constraint fk_posts_usuarios foreign key (ps_us_id)
+references usuarios(us_id);
+
+alter table favoritos
+add constraint fk_usuarios_favoritos foreign key (fv_us_id)
+references usuarios(us_id)
+
+alter table favoritos 
+add constraint fk_posts_favoritos foreign key (fv_ps_id)
+references posts(ps_id) on delete cascade;
