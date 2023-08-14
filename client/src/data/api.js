@@ -1,9 +1,9 @@
 
-const API_URL = '/api'; // Ajustar según la ruta del backend
+const API_URL = 'http://localhost:3000/usuarios';
 
 export const fetchUsers = async () => {
     try {
-        const response = await fetch(`${API_URL}/users`);
+        const response = await fetch(API_URL);
         if (!response.ok) {
             throw new Error('No se pudo obtener la lista de usuarios');
         }
@@ -14,4 +14,3 @@ export const fetchUsers = async () => {
         throw error;
     }
 };
-

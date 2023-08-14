@@ -24,11 +24,11 @@ export const DetailProduct = ({ discos }) => {
     }, [discos, id]);
 
     if (isLoading) {
-        return <div>Cargando...</div>;
+        return <div className="col-md-10 mx-auto row mt-5 text-light animate__animated animate__fadeIn">Cargando...</div>;
     }
 
     if (!disco) {
-        return <div>No se han encontrado detalles del disco.</div>;
+        return <div className="col-md-10 mx-auto row mt-5 text-light animate__animated animate__fadeIn">No se han encontrado detalles del disco.</div>;
     }
 
     return (
