@@ -11,9 +11,9 @@ const registrarUsuario = async (usuario) => {
   };
 
 const ingresoPosts = async (posts) => {
-    let { usuario, titulo, descripcion, img_disco } = posts;
-    const values = [usuario, titulo, descripcion, img_disco ];
-    const consultaPosts = "INSERT INTO posts VALUES (DEFAULT, $1, $2, $3, $4)";
+    let { usuario, banda, album, albumImage, albumYear, categoria } = posts;
+    const values = [usuario, banda, album, albumImage, albumYear, categoria ];
+    const consultaPosts = "INSERT INTO posts VALUES (DEFAULT, $1, $2, $3, $4, $5, $6)";
     await pool.query(consultaPosts, values);
   
 }
