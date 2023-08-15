@@ -6,7 +6,7 @@ const pool = require("../db/conexion");
 
 
 const { registrarUsuario, ingresoPosts, ingresoFavoritos, obtenerDatosDeUsuario, verificarCredenciales} = require('../consultas/consultas');
-const { tokenVerification } = require('../middlewares/middleware');
+const { checkCredentialsExists, tokenVerification } = require('../middlewares/middleware');
 
 router.get('/', (req, res) => {
     res.send('Bienvenido a MegaloManiac');
