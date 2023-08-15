@@ -1,5 +1,4 @@
-import { createContext, useState, useContext } from 'react';
-import { fetchUsers } from '../data/api';
+import { createContext, useState, useContext, useEffect } from 'react';
 
 const AuthContext = createContext();
 
@@ -10,59 +9,44 @@ export const AuthProvider = ({ children }) => {
     const [password, setPassword] = useState('');
     const [name, setName] = useState('');
     const [isRegistered, setIsRegistered] = useState(false);
+    const [users, setUsers] = useState([]);
 
-    const handleLogin = async () => {
+    useEffect(() => {
+        fetchUsers();
+    }, []);
 
-        try {
-            const users = await fetchUsers(); // Llama a la función para obtener la lista de usuarios
-
-            const existingUser = users.find(user => user.email === email && user.password === password);
-
-            if (existingUser) {
-                setIsLoggedIn(true);
-                setError('');
-            } else {
-                setError('Credenciales de inicio de sesión incorrectas');
-            }
-
-        } catch (error) {
-            setError('Error al realizar el inicio de sesión');
-        }
-    };
-
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e, action) => {
         e.preventDefault();
 
-        // Validación de campos
         if (!email.trim() || !password.trim()) {
             setError('Los datos ingresados no son válidos.');
             return;
         }
 
         setError(false);
-        setIsRegistered(true);
+        setIsRegistered(action === 'register');
 
         try {
-            // Envía los datos del nuevo usuario al servidor para registrarlo en la base de datos
-            await fetch('/register', {
+            const response = await fetch(action === 'register' ? 'http://localhost:3000/register' : 'http://localhost:3000/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({ name, email, password }),
             });
-    
-            // Simula una autenticación exitosa después de 1 segundo
-            setTimeout(() => {
-                setIsRegistered(false);
+
+            if (response.ok) {
                 setIsLoggedIn(true);
-                setError('');
                 setEmail('');
                 setPassword('');
-                handleLogin();
-            }, 1500);
+                setError('');
+            } else {
+                setError('Credenciales de inicio de sesión incorrectas');
+            }
+
+            setIsRegistered(false);
         } catch (error) {
-            setError('Error al realizar el registro');
+            setError('Error al realizar el registro o inicio de sesión');
         }
     };
 
@@ -83,7 +67,19 @@ export const AuthProvider = ({ children }) => {
         setPassword,
         handleSubmit,
         handleLogout,
-        handleLogin,
+    };
+
+    const fetchUsers = async () => {
+        try {
+            const response = await fetch('http://localhost:3000/usuarios');
+            if (!response.ok) {
+                throw new Error('No se pudo obtener la lista de usuarios');
+            }
+            const data = await response.json();
+            setUsers(data);
+        } catch (error) {
+            console.error('Error al obtener la lista de usuarios:', error);
+        }
     };
 
     return <AuthContext.Provider value={authContextValue}>{children}</AuthContext.Provider>;

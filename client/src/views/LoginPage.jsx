@@ -42,7 +42,7 @@ export const LoginPage = () => {
                         />
                     </Form.Group>
                     <div className="d-flex justify-content-center">
-                        <Button onClick={handleLogin} variant='primary btn-dark mb-3' type='submit'>
+                        <Button onClick={handleSubmit} variant='primary btn-dark mb-3' type='submit'>
                             Enviar
                         </Button>
                     </div>

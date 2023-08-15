@@ -6,7 +6,7 @@ const pool = require("../db/conexion");
 
 
 const { registrarUsuario, ingresoPosts, ingresoFavoritos, obtenerDatosDeUsuario, verificarCredenciales} = require('../consultas/consultas');
-const { checkCredentialsExists, tokenVerification } = require('../middlewares/middleware');
+const { tokenVerification } = require('../middlewares/middleware');
 
 router.get('/', (req, res) => {
     res.send('Bienvenido a MegaloManiac');
@@ -14,7 +14,7 @@ router.get('/', (req, res) => {
 
 //Insertar nuevo usuario
 
-router.post('/usuarios', checkCredentialsExists, async(req, res) => {
+router.post('/usuarios', async(req, res) => {
     try {
         const usuario = req.body;
         await registrarUsuario(usuario);
@@ -52,7 +52,7 @@ router.post('/favoritos', async(req, res) => {
 
 //Visualizar un usuario
 
-router.get('/usuarios', checkCredentialsExists, async(req, res) => {
+router.get('/usuarios', async(req, res) => {
     try {
         const consulta = "SELECT * FROM usuarios";
         const {rows} =  await pool.query(consulta)
