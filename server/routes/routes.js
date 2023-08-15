@@ -50,12 +50,30 @@ router.post('/favoritos', async(req, res) => {
     }
 })
 
+
+
 //Visualizar un usuario
 
-router.get('/usuarios', checkCredentialsExists, async(req, res) => {
+router.get('/usuarios', async(req, res) => {
     try {
         const consulta = "SELECT * FROM usuarios";
         const {rows} =  await pool.query(consulta)
+        res.json(rows);
+    } catch (error) {
+        //res.status(500).send(error)
+        console.log(error.message)
+    }
+})
+
+
+//Visualizar un usuario por email
+
+router.get('/usuarios/:email', async(req, res) => {
+    try {
+        const {email} = req.params;
+        const consulta = "SELECT * FROM usuarios where us_email = $1";
+        const values = [email];
+        const {rows} =  await pool.query(consulta, values)
         res.json(rows);
     } catch (error) {
         res.status(500).send(error)
@@ -130,7 +148,7 @@ router.get("/usuarios", tokenVerification, async (req, res) => {
   }
 });
 
-router.post("/login", async (req, res) => {
+router.post("/login", checkCredentialsExists, async (req, res) => {
     try {
       const { email, password } = req.body;
       await verificarCredenciales(email, password);
