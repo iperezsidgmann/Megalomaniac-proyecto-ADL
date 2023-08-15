@@ -3,10 +3,10 @@ Create database megalomaniac
 create table usuarios(
 	us_id serial primary key,
 	us_email varchar(40),
+	us_name varchar (22),
 	us_password varchar(100),
 	us_img varchar(200)
 )
-
 
 create table posts(
 	ps_id serial primary key,
