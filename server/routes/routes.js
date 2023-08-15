@@ -94,7 +94,7 @@ router.get('/posts/:id', async(req, res) => {
 // Ver todos los Favoritos 
 router.get('/favoritos/', async(req, res) => {
     try {
-        const consulta = "select fv_id, us_id, us_email, ps_titulo, ps_descripcion, ps_img from favoritos inner join usuarios on fv_us_id = us_id inner join posts on fv_ps_id = ps_id";
+        const consulta = "select fv_id, us_id, us_email, ps_band,  ps_album, ps_albumimage, ps_albumyear, ps_category from favoritos inner join usuarios on fv_us_id = us_id inner join posts on fv_ps_id = ps_id";
         const {rows} =  await pool.query(consulta)
         res.json(rows);
     } catch (error) {
@@ -116,7 +116,6 @@ router.get('/favoritos/:id', async(req, res) => {
         //console.log(error.message)
     }
 })
-
 
 //Login o Acceso a Usuario
 
