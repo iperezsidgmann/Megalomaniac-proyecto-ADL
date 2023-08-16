@@ -17,38 +17,41 @@ export const AuthProvider = ({ children }) => {
 
     const handleSubmit = async (e, action) => {
         e.preventDefault();
-
+    
         if (!email.trim() || !password.trim()) {
             setError('Los datos ingresados no son válidos.');
             return;
         }
-
+    
         setError(false);
         setIsRegistered(action === 'register');
-
+    
         try {
-            const response = await fetch(action === 'register' ? 'http://localhost:3000/register' : 'http://localhost:3000/login', {
+            const response = await fetch(action === 'register' ? 'http://localhost:3000/usuarios' : 'http://localhost:3000/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({ name, email, password }),
             });
-
+    
             if (response.ok) {
-                setIsLoggedIn(true);
+                if (action === 'register') {
+                    setIsRegistered(true);
+                } else {
+                    setIsLoggedIn(true);
+                }
                 setEmail('');
                 setPassword('');
                 setError('');
             } else {
                 setError('Credenciales de inicio de sesión incorrectas');
             }
-
-            setIsRegistered(false);
         } catch (error) {
             setError('Error al realizar el registro o inicio de sesión');
         }
     };
+    
 
     const handleLogout = () => {
         setIsLoggedIn(false);
