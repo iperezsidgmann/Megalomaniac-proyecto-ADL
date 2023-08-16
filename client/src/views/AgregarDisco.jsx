@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthProvider';
 import { discos } from '../data/discos';
@@ -13,6 +13,12 @@ export const AgregarDisco = () => {
     const [album, setAlbum] = useState('');
     const [albumImage, setAlbumImage] = useState('');
     const [category, setCategory] = useState('');
+
+    useEffect(() => {
+        if (!isLoggedIn) {
+            navigate('/login');
+        }
+    }, [isLoggedIn, navigate]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -37,11 +43,6 @@ export const AgregarDisco = () => {
         // Redirigir a la página "Mis Discos" solo después de agregar el álbum
         navigate(`/mis-discos?category=${category}`, { state: { newDisco } });
     };
-
-    if (!isLoggedIn) {
-        navigate('/login');
-        return null;
-    }
 
     const categorias = ['Rock', 'Pop', 'Folk', 'Metal'];
 
