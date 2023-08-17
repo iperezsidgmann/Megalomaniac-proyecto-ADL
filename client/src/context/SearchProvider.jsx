@@ -1,5 +1,4 @@
-import { createContext, useContext } from "react";
-import { discos } from "../data/discos";
+import React, { createContext, useContext, useEffect, useState } from "react";
 
 const SearchContext = createContext();
 
@@ -8,14 +7,44 @@ export const useSearchContext = () => {
 };
 
 export const SearchProvider = ({ children }) => {
+    const [discos, setDiscos] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        try {
+            fetch("http://localhost:3000/posts")
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error('Error de respuesta');
+                    }
+                    return response.json();
+                })
+                .then((data) => {
+                    setDiscos(data);
+                    setIsLoading(false);
+                })
+                .catch((error) => {
+                    console.error("Error fetching discos:", error);
+                    setIsLoading(false);
+                });
+        } catch (error) {
+            console.error("Error fetching discos:", error);
+            setIsLoading(false);
+        }
+    }, []);
+
     const searchDiscos = (term) => {
         return discos.filter(
             (disco) =>
-                disco.album.toLowerCase().includes(term.toLowerCase()) ||
-                disco.band.toLowerCase().includes(term.toLowerCase()) ||
-                disco.category.toLowerCase().includes(term.toLowerCase())
+                disco.ps_album.toLowerCase().includes(term.toLowerCase()) ||
+                disco.ps_band.toLowerCase().includes(term.toLowerCase()) ||
+                disco.ps_category.toLowerCase().includes(term.toLowerCase())
         );
     };
+
+    if (isLoading) {
+        return <div>Cargando...</div>;
+    }
 
     return (
         <SearchContext.Provider value={searchDiscos}>
