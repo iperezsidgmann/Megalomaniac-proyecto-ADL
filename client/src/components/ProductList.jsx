@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
-import { ProductCard } from './index';
+import React, { useState, useEffect } from 'react';
 import { ListGroup } from 'react-bootstrap';
 import { useSearchContext } from '../context/SearchProvider';
+import { usePost } from '../context/PostProvider';
+import { ProductCard } from './index';
 import 'animate.css';
+import { useLocation } from 'react-router-dom';
 
 const navigationItems = [
     { title: 'Rock', path: '/rockpage' },
@@ -15,15 +16,16 @@ const navigationItems = [
 export const ProductList = () => {
     const location = useLocation();
     const searchTerm = new URLSearchParams(location.search).get('search');
-    const searchFunction = useSearchContext(); 
-    const [filteredDiscos, setFilteredDiscos] = useState([]);
+    const searchFunction = useSearchContext();
+    const { posts } = usePost(); 
     const [selectedCategory, setSelectedCategory] = useState(null);
+    const [filteredDiscos, setFilteredDiscos] = useState([]); // Add this line
 
     useEffect(() => {
-        let filtered = searchFunction(""); // Inicialmente, obtén todos los discos
+        let filtered = searchFunction('');
 
         if (searchTerm) {
-            filtered = searchFunction(searchTerm); // Usa la función de búsqueda del contexto
+            filtered = searchFunction(searchTerm);
         }
 
         if (selectedCategory) {
@@ -68,14 +70,13 @@ export const ProductList = () => {
                         ))}
                     </ListGroup>
                 </div>
-
                 <div className="col-md-10 col-sm-8 mt-3">
                     {filteredDiscos.length === 0 ? (
                         <div>No se encontraron resultados.</div>
                     ) : (
                         <div className="row row-cols-1 row-cols-md-3 g-3 m-1 animate__animated animate__fadeIn">
                             {filteredDiscos.map((disco) => (
-                                <ProductCard  key={disco.id} {...disco} />
+                                <ProductCard key={disco.id} {...disco} />
                             ))}
                         </div>
                     )}
