@@ -105,6 +105,21 @@ router.get('/posts/:id', async(req, res) => {
     }
 })
 
+//Visualizar discos por Id_Usuario
+
+router.get('/posts/:idUsuario', async(req, res) => {
+    try {
+        const {idUsuario} = req.params;
+        const consulta = "SELECT * FROM posts where ps_us_id = $1";
+        const values = [IdUsuario];
+        const {rows} =  await pool.query(consulta, values)
+        res.json(rows);
+    } catch (error) {
+        res.status(500).send(error)
+        //console.log(error.message)
+    }
+})
+
 // Ver todos los Favoritos 
 router.get('/favoritos/', async(req, res) => {
     try {
@@ -130,6 +145,8 @@ router.get('/favoritos/:id', async(req, res) => {
         //console.log(error.message)
     }
 })
+
+
 
 //Login o Acceso a Usuario
 

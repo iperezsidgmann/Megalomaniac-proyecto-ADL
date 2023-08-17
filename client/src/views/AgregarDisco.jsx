@@ -1,13 +1,14 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthProvider';
-import { discos } from '../data/discos';
+import { usePost } from '../context/PostProvider'; 
 import { Form, Button } from 'react-bootstrap';
 import 'animate.css';
 
 export const AgregarDisco = () => {
     const { isLoggedIn } = useAuth();
     const navigate = useNavigate();
+    const { addNewPost } = usePost(); 
 
     const [band, setBand] = useState('');
     const [album, setAlbum] = useState('');
@@ -20,7 +21,7 @@ export const AgregarDisco = () => {
         }
     }, [isLoggedIn, navigate]);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         if (!band || !album || !albumImage || !category) {
@@ -28,17 +29,14 @@ export const AgregarDisco = () => {
             return;
         }
 
-        const newId = (discos.length + 1).toString();
-
         const newDisco = {
-            id: newId,
-            band: band,
-            album: album,
-            albumImage: albumImage,
-            category: category,
+            ps_band: band,
+            ps_album: album,
+            ps_albumImage: albumImage,
+            ps_category: category,
         };
 
-        discos.push(newDisco);
+        await addNewPost(newDisco);
 
         // Redirigir a la página "Mis Discos" solo después de agregar el álbum
         navigate(`/mis-discos?category=${category}`, { state: { newDisco } });

@@ -34,12 +34,18 @@ export const SearchProvider = ({ children }) => {
     }, []);
 
     const searchDiscos = (term) => {
-        return discos.filter(
-            (disco) =>
-                disco.ps_album.toLowerCase().includes(term.toLowerCase()) ||
-                disco.ps_band.toLowerCase().includes(term.toLowerCase()) ||
-                disco.ps_category.toLowerCase().includes(term.toLowerCase())
-        );
+        return discos.filter((disco) => {
+            const lowerCaseTerm = term.toLowerCase();
+            const album = disco.ps_album ? disco.ps_album.toLowerCase() : '';
+            const band = disco.ps_band ? disco.ps_band.toLowerCase() : '';
+            const category = disco.ps_category ? disco.ps_category.toLowerCase() : '';
+            
+            return (
+                album.includes(lowerCaseTerm) ||
+                band.includes(lowerCaseTerm) ||
+                category.includes(lowerCaseTerm)
+            );
+        });
     };
 
     if (isLoading) {
