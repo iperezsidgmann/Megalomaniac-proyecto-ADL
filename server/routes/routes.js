@@ -105,20 +105,22 @@ router.get('/posts/:id', async(req, res) => {
     }
 })
 
-//Visualizar discos por Id_Usuario
+//Visualizar discos por Usuario
 
-router.get('/posts/:idUsuario', async(req, res) => {
+router.get('/usuarios_posts/:email', async(req, res) => {
     try {
-        const {idUsuario} = req.params;
-        const consulta = "SELECT * FROM posts where ps_us_id = $1";
-        const values = [IdUsuario];
-        const {rows} =  await pool.query(consulta, values)
+    
+        const {email} = req.params;
+        const consulta = "SELECT us_email, ps_id, ps_band, ps_album, ps_albumimage, ps_albumyear, ps_category FROM posts inner join usuarios on ps_us_id = us_id where us_email = $1";
+        const values = [email];
+              const {rows} =  await pool.query(consulta, values)
         res.json(rows);
     } catch (error) {
-        res.status(500).send(error)
-        //console.log(error.message)
-    }
+        //res.status(500).send(error)
+        console.log(error.message)
+    }
 })
+
 
 // Ver todos los Favoritos 
 router.get('/favoritos/', async(req, res) => {
