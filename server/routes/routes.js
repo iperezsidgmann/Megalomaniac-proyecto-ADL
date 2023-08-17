@@ -6,22 +6,21 @@ const pool = require("../db/conexion");
 
 
 const { registrarUsuario, ingresoPosts, ingresoFavoritos, obtenerDatosDeUsuario, verificarCredenciales} = require('../consultas/consultas');
-const { tokenVerification } = require('../middlewares/middleware');
+const { checkCredentialsExists, tokenVerification } = require('../middlewares/middleware');
 
 router.get('/', (req, res) => {
     res.send('Bienvenido a MegaloManiac');
 });
 
 //Insertar nuevo usuario
-
 router.post('/usuarios', async(req, res) => {
     try {
         const usuario = req.body;
         await registrarUsuario(usuario);
         res.send('Usuario registrado');
     } catch (error) {
-        res.status(500).send(error)
-        //console.log(error)
+        //res.status(500).send(error)
+        console.log(error)
     }
 })
 
@@ -50,8 +49,6 @@ router.post('/favoritos', async(req, res) => {
     }
 })
 
-
-
 //Visualizar un usuario
 
 router.get('/usuarios', async(req, res) => {
@@ -64,7 +61,6 @@ router.get('/usuarios', async(req, res) => {
         console.log(error.message)
     }
 })
-
 
 //Visualizar un usuario por email
 
@@ -188,7 +184,8 @@ router.delete('/posts/:id', async(req, res) => {
         const { rows } = await pool.query(consulta, values)
         res.send('Post Eliminado')
     } catch (error) {
-        console.log(error.message)
+        res.status(500).send(error)
+        c//onsole.log(error.message)
     }
 })
 
@@ -199,14 +196,12 @@ router.delete('/favoritos/:id', async(req, res) => {
         const { id } = req.params;
         const consulta = 'DELETE FROM favoritos WHERE fv_id = $1';
         const values = [id];
-        console.log(consulta)
-        console.log(values)
         const { rows } = await pool.query(consulta, values)
         res.send('Favorito Eliminado')
     } catch (error) {
-        console.log(error.message)
+        res.status(500).send(error)
+        //console.log(error.message)
     }
 })
-
 
 module.exports = router
