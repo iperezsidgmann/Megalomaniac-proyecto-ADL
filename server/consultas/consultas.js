@@ -14,13 +14,12 @@ const ingresoPosts = async (posts) => {
     let { usuario, banda, album, albumImage, albumYear, categoria } = posts;
     const values = [usuario, banda, album, albumImage, albumYear, categoria ];
     const consultaPosts = "INSERT INTO posts VALUES (DEFAULT, $1, $2, $3, $4, $5, $6)";
-    await pool.query(consultaPosts, values);
-  
+    await pool.query(consultaPosts, values); 
 }
 
 const obtenerDatosDeUsuario = async (email) => {
     const values = [email];
-    const consulta = "SELECT * FROM usuarios WHERE email = $1";
+    const consulta = "SELECT * FROM usuarios WHERE us_email = $1";
   
     const {
       rows: [usuario],
@@ -32,8 +31,7 @@ const obtenerDatosDeUsuario = async (email) => {
         code: 404,
         message: "No se encontró ningún usuario con este email",
       };
-    }
-  
+   }
     delete usuario.password;
     return usuario;
   };
