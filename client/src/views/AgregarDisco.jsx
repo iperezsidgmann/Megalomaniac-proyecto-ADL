@@ -38,8 +38,8 @@ export const AgregarDisco = () => {
 
         await addNewPost(newDisco);
 
-        // Redirigir a la página "Mis Discos" solo después de agregar el álbum
-        navigate(`/mis-discos?category=${category}`, { state: { newDisco } });
+       
+        navigate('/mis-discos');
     };
 
     const categorias = ['Rock', 'Pop', 'Folk', 'Metal'];

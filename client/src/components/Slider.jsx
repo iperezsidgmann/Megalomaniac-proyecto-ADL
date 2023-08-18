@@ -17,7 +17,14 @@ export const Slider = () => {
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
         >
-            <Carousel activeIndex={index} onSelect={handleSelect}>
+            <Carousel
+                activeIndex={index}
+                onSelect={handleSelect}
+                controls={false}
+                indicators={false}
+                interval={5000}
+
+            >
                 <Carousel.Item>
                     <img
                         src='../assets/img/img1_slider.png'

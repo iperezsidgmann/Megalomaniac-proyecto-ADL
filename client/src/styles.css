@@ -16,7 +16,7 @@ body {
 }
 
 .slider-image {
-    max-height: 550px;
+    max-height: 80vh;
     width: 100%;
     object-fit: cover;
 }
@@ -56,6 +56,7 @@ body {
     z-index: 100;
     opacity: 0; /* Initial opacity set to 0 */
     transition: opacity 1s; /* Transition duration for opacity */
+    max-height: 92vh;
 }
 
 .interference-image,

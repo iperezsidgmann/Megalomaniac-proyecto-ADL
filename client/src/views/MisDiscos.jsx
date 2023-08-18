@@ -9,6 +9,7 @@ export const MisDiscos = () => {
     const location = useLocation();
     const { user } = useAuth();
 
+    const categoryFromQuery = new URLSearchParams(location.search).get('category');
     const agregarFavorito = (disco) => {
         setFavoritos([...favoritos, disco]);
     };
@@ -34,8 +35,14 @@ export const MisDiscos = () => {
     }, [location.state]);
 
     
-    const discosCreadosPorUsuario = userDiscos.filter((disco) => disco.ps_us_id === user.us_id);
-
+    const discosCreadosPorUsuario = userDiscos.filter((disco) => {
+        if (categoryFromQuery) {
+            return disco.ps_us_id === user.us_id && disco.ps_category === categoryFromQuery;
+        } else {
+            return disco.ps_us_id === user.us_id;
+        }
+    });
+    
     return (
         <div className="container mt-5">
             <h2>Mis Discos</h2>
