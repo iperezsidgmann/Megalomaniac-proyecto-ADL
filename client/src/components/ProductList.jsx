@@ -17,54 +17,50 @@ export const ProductList = () => {
   const location = useLocation();
   const searchTerm = new URLSearchParams(location.search).get('search');
   const searchFunction = useSearchContext();
-  const { posts } = usePost(); 
+  const { posts } = usePost();
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [filteredDiscos, setFilteredDiscos] = useState([]);
   const [isFetching, setIsFetching] = useState(true);
   const [fetchError, setFetchError] = useState(null);
 
   useEffect(() => {
-    try {
-      setIsFetching(true);
-      setFetchError(null);
-
-      // Fetch posts desde PostProvider
-      fetch("http://localhost:3000/posts") 
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error('Network response was not ok');
-          }
-          return response.json();
-        })
-        .then((data) => {
-          setIsFetching(false);
-
-          let filtered = searchFunction('');
-
-          if (searchTerm) {
-            filtered = searchFunction(searchTerm);
-          }
-
-          if (selectedCategory) {
-            filtered = filtered.filter(
-              (disco) => disco.ps_category.toLowerCase() === selectedCategory.toLowerCase()
-            );
-          }
-
-          setFilteredDiscos(filtered);
-        })
-        .catch((error) => {
-          console.error("Error fetching posts:", error);
-          setIsFetching(false);
-          setFetchError("Error fetching data");
-        });
-    } catch (error) {
-      console.error("Error fetching posts:", error);
-      setIsFetching(false);
-      setFetchError("Error fetching data");
-    }
+    
+    const fetchPosts = async () => {
+      try {
+        setIsFetching(true);
+        setFetchError(null);
+  
+        const response = await fetch("http://localhost:3000/posts");
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+  
+        const data = await response.json();
+        setIsFetching(false);
+  
+        let filtered = searchFunction('');
+  
+        if (searchTerm) {
+          filtered = searchFunction(searchTerm);
+        }
+  
+        if (selectedCategory) {
+          filtered = filtered.filter(
+            (disco) => disco.ps_category && disco.ps_category.toLowerCase() === selectedCategory.toLowerCase()
+          );
+        }
+  
+        setFilteredDiscos(filtered);
+      } catch (error) {
+        console.error("Error fetching posts:", error);
+        setIsFetching(false);
+        setFetchError("Error fetching data");
+      }
+    };
+  
+    fetchPosts();
   }, [searchTerm, selectedCategory, searchFunction]);
-
+  
   const handleCategoryClick = (category) => {
     setSelectedCategory(category);
   };
@@ -79,8 +75,8 @@ export const ProductList = () => {
           <ListGroup className="list-group">
             <ListGroup.Item
               action variant="dark"
-              className={`list-group-item list-group-item-action  ${selectedCategory === null ? 'active' : ''
-                }`}
+              className={`list-group-item list-group-item-action ${selectedCategory === null ? 'active' : ''
+            }`}
               onClick={() => handleCategoryClick(null)}
             >
               Mostrar todos
@@ -90,7 +86,7 @@ export const ProductList = () => {
                 action variant="dark"
                 key={item.title}
                 className={`list-group-item list-group-item-action ${selectedCategory === item.title ? 'active' : ''
-                  }`}
+              }`}
                 onClick={() => handleCategoryClick(item.title)}
               >
                 {item.title}
