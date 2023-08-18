@@ -5,7 +5,7 @@ import 'animate.css';
 
 export const Slider = () => {
     const [index, setIndex] = useState(0);
-    const [isHovered, setIsHovered] = useState(false); // Track hover state
+    const [isHovered, setIsHovered] = useState(false); 
 
     const handleSelect = (selectedIndex) => {
         setIndex(selectedIndex);
@@ -15,15 +15,15 @@ export const Slider = () => {
         <div
             className='slider-container animate__animated animate__fadeIn'
             onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
+            onMouseLeave={() => setIsHovered}
         >
-            <Carousel
-                activeIndex={index}
-                onSelect={handleSelect}
-                controls={false}
+            <Carousel 
+            activeIndex={index} 
+            onSelect={handleSelect}
+            controls={false} 
                 indicators={false}
-                interval={5000}
-
+                interval={5000} 
+            
             >
                 <Carousel.Item>
                     <img
