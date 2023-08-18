@@ -6,22 +6,21 @@ const pool = require("../db/conexion");
 
 
 const { registrarUsuario, ingresoPosts, ingresoFavoritos, obtenerDatosDeUsuario, verificarCredenciales} = require('../consultas/consultas');
-const { tokenVerification } = require('../middlewares/middleware');
+const { checkCredentialsExists, tokenVerification } = require('../middlewares/middleware');
 
 router.get('/', (req, res) => {
     res.send('Bienvenido a MegaloManiac');
 });
 
 //Insertar nuevo usuario
-
 router.post('/usuarios', async(req, res) => {
     try {
         const usuario = req.body;
         await registrarUsuario(usuario);
         res.send('Usuario registrado');
     } catch (error) {
-        res.status(500).send(error)
-        //console.log(error)
+        //res.status(500).send(error)
+        console.log(error)
     }
 })
 
@@ -50,8 +49,6 @@ router.post('/favoritos', async(req, res) => {
     }
 })
 
-
-
 //Visualizar un usuario
 
 router.get('/usuarios', async(req, res) => {
@@ -64,7 +61,6 @@ router.get('/usuarios', async(req, res) => {
         console.log(error.message)
     }
 })
-
 
 //Visualizar un usuario por email
 
@@ -109,6 +105,23 @@ router.get('/posts/:id', async(req, res) => {
     }
 })
 
+//Visualizar discos por Usuario
+
+router.get('/usuarios_posts/:email', async(req, res) => {
+    try {
+    
+        const {email} = req.params;
+        const consulta = "SELECT us_email, ps_id, ps_band, ps_album, ps_albumimage, ps_albumyear, ps_category FROM posts inner join usuarios on ps_us_id = us_id where us_email = $1";
+        const values = [email];
+              const {rows} =  await pool.query(consulta, values)
+        res.json(rows);
+    } catch (error) {
+        //res.status(500).send(error)
+        console.log(error.message)
+    }
+})
+
+
 // Ver todos los Favoritos 
 router.get('/favoritos/', async(req, res) => {
     try {
@@ -134,6 +147,8 @@ router.get('/favoritos/:id', async(req, res) => {
         //console.log(error.message)
     }
 })
+
+
 
 //Login o Acceso a Usuario
 
@@ -188,7 +203,8 @@ router.delete('/posts/:id', async(req, res) => {
         const { rows } = await pool.query(consulta, values)
         res.send('Post Eliminado')
     } catch (error) {
-        console.log(error.message)
+        res.status(500).send(error)
+        c//onsole.log(error.message)
     }
 })
 
@@ -199,14 +215,12 @@ router.delete('/favoritos/:id', async(req, res) => {
         const { id } = req.params;
         const consulta = 'DELETE FROM favoritos WHERE fv_id = $1';
         const values = [id];
-        console.log(consulta)
-        console.log(values)
         const { rows } = await pool.query(consulta, values)
         res.send('Favorito Eliminado')
     } catch (error) {
-        console.log(error.message)
+        res.status(500).send(error)
+        //console.log(error.message)
     }
 })
-
 
 module.exports = router
