@@ -2,6 +2,7 @@ import { BrowserRouter } from "react-router-dom";
 import { AuthProvider } from "./context/AuthProvider";
 import { FavoriteProvider } from "./context/FavoriteProvider";
 import { SearchProvider } from "./context/SearchProvider";
+import { PostProvider } from "./context/PostProvider";
 import { AppContent } from "./AppContent";
 
 export const App = () => {
@@ -9,12 +10,13 @@ export const App = () => {
         <AuthProvider>
             <FavoriteProvider>
                 <SearchProvider>
-                    <BrowserRouter>
-                        <AppContent />
-                    </BrowserRouter>
+                    <PostProvider>
+                        <BrowserRouter>
+                            <AppContent />
+                        </BrowserRouter>
+                    </PostProvider>
                 </SearchProvider>
             </FavoriteProvider>
         </AuthProvider>
     );
 };
-

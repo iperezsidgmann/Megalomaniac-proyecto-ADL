@@ -1,12 +1,15 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ProductCard } from '../components';
 import { useLocation } from 'react-router-dom';
+import { useAuth } from '../context/AuthProvider';
 
 export const MisDiscos = () => {
     const [favoritos, setFavoritos] = useState([]);
-    const [misDiscos, setMisDiscos] = useState([]);
+    const [userDiscos, setUserDiscos] = useState([]); 
     const location = useLocation();
+    const { user } = useAuth();
 
+    const categoryFromQuery = new URLSearchParams(location.search).get('category');
     const agregarFavorito = (disco) => {
         setFavoritos([...favoritos, disco]);
     };
@@ -17,12 +20,12 @@ export const MisDiscos = () => {
     };
 
     const agregarDisco = (disco) => {
-        setMisDiscos([...misDiscos, disco]); // Actualiza el estado de misDiscos
+        setUserDiscos([...userDiscos, disco]);
     };
 
     const eliminarDisco = (id) => {
-        const nuevosDiscos = misDiscos.filter((disco) => disco.id !== id);
-        setMisDiscos(nuevosDiscos);
+        const nuevosDiscos = userDiscos.filter((disco) => disco.ps_id !== id); 
+        setUserDiscos(nuevosDiscos);
     };
 
     useEffect(() => {
@@ -32,23 +35,31 @@ export const MisDiscos = () => {
     }, [location.state]);
 
     
+    const discosCreadosPorUsuario = userDiscos.filter((disco) => {
+        if (categoryFromQuery) {
+            return disco.ps_us_id === user.us_id && disco.ps_category === categoryFromQuery;
+        } else {
+            return disco.ps_us_id === user.us_id;
+        }
+    });
+    
     return (
         <div className="container mt-5">
             <h2>Mis Discos</h2>
             <div className="row">
-                {misDiscos.map((disco) => (
+                {discosCreadosPorUsuario.map((disco) => (
                     <ProductCard
-                        key={disco.id}
-                        id={disco.id}
-                        band={disco.band}
-                        album={disco.album}
-                        albumImage={disco.albumImage}
-                        category={disco.category}
-                        isFavorite={favoritos.some((fav) => fav.id === disco.id)}
-                        isUserCreated={disco.isUserCreated}
+                        key={disco.ps_id}
+                        id={disco.ps_id}
+                        band={disco.ps_band}
+                        album={disco.ps_album}
+                        albumImage={disco.ps_albumimage}
+                        category={disco.ps_category}
+                        isFavorite={favoritos.some((fav) => fav.id === disco.ps_id)}
                         onAddFavorite={() => agregarFavorito(disco)}
-                        onRemoveFavorite={() => quitarFavorito(disco.id)}
-                        onDelete={() => eliminarDisco(disco.id)}
+                        onRemoveFavorite={() => quitarFavorito(disco.ps_id)}
+                        onDelete={() => eliminarDisco(disco.ps_id)}
+                        isUserCreated
                     />
                 ))}
             </div>

@@ -12,7 +12,11 @@ app.use(cors());
 
 app.use('/', router);
 
-
-app.listen(PORT, () => {
+if (process.env.NODE_ENV !== "test") { 
+    app.listen(PORT, () => {
     console.log(`Escuchando por Puerto ${PORT}`);
 })
+}
+
+
+module.exports = app

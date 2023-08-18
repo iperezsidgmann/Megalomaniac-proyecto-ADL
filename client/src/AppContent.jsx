@@ -1,7 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import { Navbar, Footer, DetailProduct } from './components/index';
 import { HomePage, LoginPage, PanelPage, SignupPage, MisDiscos, AgregarDisco, Favoritos, LogoutPage } from "./views/index";
-import { RockPage, PopPage, FolkPage, MetalPage } from './pages/index';
+import { RockPage, PopPage, FolkPage, MetalPage, NotFound } from './pages/index';
 import { useSearchContext } from "./context/SearchProvider";
 import { discos } from "./data/discos";
 
@@ -27,7 +27,7 @@ export const AppContent = () => {
                     <Route path="/mis-discos" element={<MisDiscos />} />
                     <Route path="/agregar-disco" element={<AgregarDisco />} />
                     <Route path="/favoritos" element={<Favoritos />} />
-                    <Route path="*" element={<HomePage />} />
+                    <Route path="*" element={<NotFound />} />
                 </Routes>
             </div>
             <Footer />
