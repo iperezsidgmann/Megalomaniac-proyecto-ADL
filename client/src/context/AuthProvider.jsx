@@ -9,7 +9,7 @@ export const AuthProvider = ({ children }) => {
     const [password, setPassword] = useState('');
     const [name, setName] = useState('');
     const [isRegistered, setIsRegistered] = useState(false);
-    const [users, setUsers] = useState([]);
+    const [user, setUser] = useState(null);
 
     useEffect(() => {
         fetchUsers();
@@ -57,6 +57,20 @@ export const AuthProvider = ({ children }) => {
         setIsLoggedIn(false);
     };
 
+    const fetchUsers = async () => {
+        try {
+            const response = await fetch('http://localhost:3000/usuarios');
+            if (!response.ok) {
+                throw new Error('No se pudo obtener la lista de usuarios');
+            }
+            const data = await response.json();
+            setUser(data);
+        } catch (error) {
+            console.error('Error al obtener la lista de usuarios:', error);
+        }
+    };
+
+
     const authContextValue = {
         isLoggedIn,
         name,
@@ -64,6 +78,8 @@ export const AuthProvider = ({ children }) => {
         error,
         email,
         setEmail,
+        user,
+        setUser,
         password,
         isRegistered,
         setIsRegistered,
@@ -72,18 +88,6 @@ export const AuthProvider = ({ children }) => {
         handleLogout,
     };
 
-    const fetchUsers = async () => {
-        try {
-            const response = await fetch('http://localhost:3000/usuarios');
-            if (!response.ok) {
-                throw new Error('No se pudo obtener la lista de usuarios');
-            }
-            const data = await response.json();
-            setUsers(data);
-        } catch (error) {
-            console.error('Error al obtener la lista de usuarios:', error);
-        }
-    };
 
     return <AuthContext.Provider value={authContextValue}>{children}</AuthContext.Provider>;
 };

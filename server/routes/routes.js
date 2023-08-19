@@ -25,17 +25,16 @@ router.post('/usuarios', async(req, res) => {
 })
 
 //Agregar Nuevo Posts (disco)
-router.post('/posts', async(req, res) => {
+router.post('/posts', async (req, res) => {
     try {
         const posts = req.body;
+        console.log('posts', posts);
         await ingresoPosts(posts);
-        res.send('Post agregado');
+        res.json({ message: 'Post agregado' }); // Enviar respuesta JSON
     } catch (error) {
-        res.status(500).send(error)
-        //console.log(error)        
+        res.status(500).json({ error: 'Error al agregar el post' }); // Enviar respuesta JSON de error
     }
-
-})
+});
 
 // Añadir a Favoritos
 router.post('/favoritos', async(req, res) => {
