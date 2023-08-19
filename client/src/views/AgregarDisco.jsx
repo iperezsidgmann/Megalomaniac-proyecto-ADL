@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthProvider';
-import { usePost } from '../context/PostProvider'; 
+import { usePost } from '../context/PostProvider';
 import { Form, Button } from 'react-bootstrap';
 import 'animate.css';
 
 export const AgregarDisco = () => {
-    const { isLoggedIn } = useAuth();
+    const { isLoggedIn, user } = useAuth();
+    const { addNewPost } = usePost();
     const navigate = useNavigate();
-    const { addNewPost } = usePost(); 
 
     const [band, setBand] = useState('');
     const [album, setAlbum] = useState('');
@@ -30,15 +30,16 @@ export const AgregarDisco = () => {
         }
 
         const newDisco = {
-            ps_band: band,
-            ps_album: album,
-            ps_albumImage: albumImage,
-            ps_category: category,
+            usuario: user.id,
+            banda: band,
+            album: album,
+            albumImage: albumImage,
+            categoria: category,
         };
 
+        console.log(newDisco)
         await addNewPost(newDisco);
 
-       
         navigate('/mis-discos');
     };
 
