@@ -17,15 +17,15 @@ export const AuthProvider = ({ children }) => {
 
     const handleSubmit = async (e, action) => {
         e.preventDefault();
-    
+
         if (!email.trim() || !password.trim()) {
             setError('Los datos ingresados no son válidos.');
             return;
         }
-    
+
         setError(false);
         setIsRegistered(action === 'register');
-    
+
         try {
             const response = await fetch(action === 'register' ? 'http://localhost:3000/usuarios' : 'http://localhost:3000/login', {
                 method: 'POST',
@@ -34,7 +34,7 @@ export const AuthProvider = ({ children }) => {
                 },
                 body: JSON.stringify({ name, email, password }),
             });
-    
+
             if (response.ok) {
                 if (action === 'register') {
                     setIsRegistered(true);
@@ -51,7 +51,6 @@ export const AuthProvider = ({ children }) => {
             setError('Error al realizar el registro o inicio de sesión');
         }
     };
-    
 
     const handleLogout = () => {
         setIsLoggedIn(false);
@@ -70,7 +69,6 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
-
     const authContextValue = {
         isLoggedIn,
         name,
@@ -87,7 +85,6 @@ export const AuthProvider = ({ children }) => {
         handleSubmit,
         handleLogout,
     };
-
 
     return <AuthContext.Provider value={authContextValue}>{children}</AuthContext.Provider>;
 };

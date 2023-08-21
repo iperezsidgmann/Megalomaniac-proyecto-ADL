@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useState, useEffect } from 'react';
 import { useAuth } from './AuthProvider';
 
 const PostContext = createContext();
@@ -55,6 +55,9 @@ export const PostProvider = ({ children }) => {
             console.error("Error al agregar el disco:", error);
         }
     }
+
+    
+
 
     if (isLoading) {
         return <div>Cargando...</div>;

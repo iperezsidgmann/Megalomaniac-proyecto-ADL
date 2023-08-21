@@ -6,7 +6,7 @@ export const Favoritos = () => {
     const { favoriteItems, onRemoveFavorite } = useFavorite();
 
     // Filtrar los discos favoritos usando los IDs en la lista de favoritos
-    const discosFavoritos = discos.filter(disco => favoriteItems.includes(disco.id));
+    const discosFavoritos = discos.filter(disco => favoriteItems.includes(disco.ps_id));
 
     return (
         <div className="container mt-5">
@@ -17,14 +17,14 @@ export const Favoritos = () => {
                 ) : (
                     discosFavoritos.map((disco) => (
                         <ProductCard
-                            key={disco.id}
-                            id={disco.id}
-                            band={disco.band}
-                            album={disco.album}
-                            albumImage={disco.albumImage}
-                            category={disco.category}
+                            key={disco.ps_id}
+                            id={disco.ps_id}
+                            band={disco.ps_band}
+                            album={disco.ps_album}
+                            albumImage={disco.ps_albumimage}
+                            category={disco.ps_category}
                             isFavorite={true}
-                            onRemoveFavorite={() => onRemoveFavorite(disco.id)}
+                            onRemoveFavorite={() => onRemoveFavorite(disco.ps_id)}
                         />
                     ))
                 )}

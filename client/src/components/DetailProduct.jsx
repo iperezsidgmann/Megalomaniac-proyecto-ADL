@@ -1,11 +1,11 @@
-import { useNavigate, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import 'animate.css';
 
-export const DetailProduct = ({ discos }) => {
+export const DetailProduct = () => {
     const { id } = useParams();
     const [disco, setDisco] = useState(null);
-    const [isLoading, setIsLoading] = useState(true);
+
 
     const navigate = useNavigate();
 
@@ -13,52 +13,46 @@ export const DetailProduct = ({ discos }) => {
         navigate(-1);
     };
 
+
     useEffect(() => {
-        const fetchDisco = async () => {
-            const discoData = discos.find((disco) => disco.id === id);
-            setDisco(discoData);
-            setIsLoading(false);
-        };
-
-        fetchDisco();
-    }, [discos, id]);
-
-    if (isLoading) {
-        return <div className="col-md-10 mx-auto row mt-5 text-light animate__animated animate__fadeIn">Cargando...</div>;
-    }
+        fetch(`http://localhost:3000/posts/${id}`) 
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.length > 0) {
+                    setDisco(data[0]); 
+                } else {
+                    console.error('No se encontró ningún disco con el ID proporcionado.');
+                }
+            })
+            .catch((error) => console.error('Error fetching product:', error));
+    }, [id]);
 
     if (!disco) {
-        return <div className="col-md-10 mx-auto row mt-5 text-light animate__animated animate__fadeIn">No se han encontrado detalles del disco.</div>;
+        return <div>Cargando...</div>;
     }
 
     return (
         <div className="col-md-10 mx-auto row mt-5 text-light animate__animated animate__fadeIn">
             <div className="col-4">
                 <img
-                    src={disco.albumImage}
-                    alt={disco.band}
+                    src={disco.ps_albumimage}
+                    alt={disco.ps_albumimage}
                     className="img-thumbnail"
                 />
             </div>
 
             <div className="col-8">
-                <h3>{disco.band}</h3>
+                <h3>{disco.ps_band}</h3>
                 <ul className="list-group ">
                     <li className="list-group-item">
-                        <b>Album:</b> {disco.album}
+                        <b>Album:</b> {disco.ps_album}
                     </li>
                     <li className="list-group-item">
-                        <b>Año:</b>  {disco.albumYear} 
-                        
+                        <b>Año:</b> {disco.ps_albumyear}
                     </li>
-
                     <li className="list-group-item">
-                        <b>Categoría:</b> {disco.category}
+                        <b>Categoría:</b> {disco.ps_category}
                     </li>
-                    {/* <li className="list-group-item">
-                        <b className="mt-3">Integrantes:</b>
-                        <p>Pendiente</p>
-                    </li> */}
                 </ul>
                 <button className="btn btn-dark mt-3" onClick={onNavigateBack}>
                     Regresar

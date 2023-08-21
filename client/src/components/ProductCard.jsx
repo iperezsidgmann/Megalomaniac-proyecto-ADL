@@ -7,7 +7,7 @@ import 'animate.css';
 
 export const ProductCard = ({ ps_id, ps_band, ps_album, ps_albumimage, ps_category }) => {
     const [isFavorite, setIsFavorite] = useState(false);
-    const { isLoggedIn, isRegistered } = useAuth();
+    const { isLoggedIn, user, isRegistered } = useAuth(); // Supongamos que el objeto de usuario tiene una propiedad "id"
     const { onRemoveFavorite, onAddFavorite, favoriteItems } = useFavorite();
 
     useEffect(() => {
@@ -25,6 +25,34 @@ export const ProductCard = ({ ps_id, ps_band, ps_album, ps_albumimage, ps_catego
         } else {
             setIsFavorite(true);
             onAddFavorite(ps_id);
+
+            // Enviamos el favorito al servidor con el ID del usuario y el ID del producto
+            const userId = user.id; // Supongamos que el objeto de usuario tiene una propiedad "id"
+            const productId = ps_id; // ID del producto
+            
+            fetch('http://localhost:3000/favoritos', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    idusuario: userId,
+                    idpost: productId,
+                }),
+            })
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error(`La solicitud no fue exitosa (${response.status} - ${response.statusText})`);
+                    }
+                    return response.json();
+                })
+                .then((data) => {
+                    // Manejar la respuesta del servidor aquí
+                    console.log('Favorito guardado en el servidor:', data);
+                })
+                .catch((error) => {
+                    console.error('Error al guardar el favorito en el servidor:', error);
+                });
         }
     };
 

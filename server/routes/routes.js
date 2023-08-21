@@ -37,16 +37,15 @@ router.post('/posts', async (req, res) => {
 });
 
 // Añadir a Favoritos
-router.post('/favoritos', async(req, res) => {
+router.post('/favoritos', async (req, res) => {
     try {
         const favoritos = req.body;
         await ingresoFavoritos(favoritos);
-        res.send('Agregado a Favoritos');
+        res.json({ message: 'Agregado a Favoritos' }); // Enviar una respuesta JSON válida
     } catch (error) {
-        res.status(500).send(error)
-        //console.log(error)        
+        res.status(500).json({ error: 'Error al agregar a Favoritos' }); // Enviar una respuesta JSON válida en caso de error
     }
-})
+});
 
 //Visualizar un usuario
 
