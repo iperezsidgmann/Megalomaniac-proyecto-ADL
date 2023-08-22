@@ -25,28 +25,73 @@ router.post('/usuarios', async(req, res) => {
 })
 
 //Agregar Nuevo Posts (disco)
-router.post('/posts', async (req, res) => {
+// router.post('/posts', async (req, res) => {
+//     try {
+//         const posts = req.body;
+//         console.log('posts', posts);
+//         await ingresoPosts(posts);
+//         res.json({ message: 'Post agregado' }); // Enviar respuesta JSON
+//     } catch (error) {
+//         res.status(500).json({ error: 'Error al agregar el post' }); // Enviar respuesta JSON de error
+//     }
+// });
+
+// chatGPT: Agrega la ruta para crear un nuevo post
+router.post('/posts', tokenVerification, async (req, res) => {
     try {
-        const posts = req.body;
-        console.log('posts', posts);
-        await ingresoPosts(posts);
-        res.json({ message: 'Post agregado' }); // Enviar respuesta JSON
+        // Obtén el token del encabezado de la solicitud
+        const token = req.header('Authorization').split('Bearer ')[1];
+        
+        // Decodifica el token para obtener el correo electrónico del usuario
+        const { email } = jwt.decode(token);
+
+        // Busca el usuario en la base de datos por su correo electrónico
+        const usuario = await obtenerDatosDeUsuario(email);
+
+        // Verifica que el usuario exista
+        if (!usuario) {
+            throw {
+                code: 404,
+                message: 'No se encontró ningún usuario con este correo electrónico',
+            };
+        }
+
+        // Obtén el id del usuario autenticado
+        const ps_us_id = usuario.us_id;
+
+        // Obtén los datos del post del cuerpo de la solicitud
+        const { band, album, albumImage, category } = req.body;
+
+        // Crea un objeto con los datos del post incluyendo ps_us_id
+        const newDisco = {
+            ps_us_id,
+            ps_band: band,
+            ps_album: album,
+            ps_albumimage: albumImage,
+            ps_albumyear: albumYear,
+            ps_category: category,
+        };
+
+        // Inserta el nuevo post en la base de datos
+        await ingresoPosts(newDisco);
+
+        res.json({ message: 'Post agregado' });
     } catch (error) {
-        res.status(500).json({ error: 'Error al agregar el post' }); // Enviar respuesta JSON de error
+        res.status(error.code || 500).json({ error: error.message });
     }
 });
 
+
 // Añadir a Favoritos
-router.post('/favoritos', async(req, res) => {
+router.post('/favoritos', async (req, res) => {
     try {
         const favoritos = req.body;
         await ingresoFavoritos(favoritos);
-        res.send('Agregado a Favoritos');
+        res.json({ message: 'Agregado a Favoritos' }); // Enviar una respuesta JSON válida
     } catch (error) {
-        res.status(500).send(error)
-        //console.log(error)        
+        res.status(500).json({ error: 'Error al agregar a Favoritos' }); // Enviar una respuesta JSON válida en caso de error
     }
-})
+});
 
 //Visualizar un usuario
 

@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useState, useEffect } from 'react';
 import { useAuth } from './AuthProvider';
 
 const PostContext = createContext();
@@ -11,36 +11,49 @@ export const PostProvider = ({ children }) => {
     const [posts, setPosts] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [addedDiscos, setAddedDiscos] = useState([]);
-    const { user } = useAuth(); // Importa useAuth desde tu contexto de autenticación
+    const { user, isLoggedIn } = useAuth(); // Importa useAuth desde tu contexto de autenticación
 
     useEffect(() => {
-        fetch("http://localhost:3000/posts")
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error('Error de respuesta');
-                }
-                return response.json();
-            })
-            .then((data) => {
-                setPosts(data);
-                setIsLoading(false);
-            })
-            .catch((error) => {
-                console.error("Error en fetch posts:", error);
-                setIsLoading(false);
-            });
-    }, []);
+        if (isLoggedIn) {
+            fetch("http://localhost:3000/posts")
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error('Error de respuesta');
+                    }
+                    return response.json();
+                })
+                .then((data) => {
+                    // Filtra los discos por el ID de usuario
+                    const userPosts = data.filter((post) => post.ps_us_id === user.id);
+                    setPosts(userPosts);
+                    setIsLoading(false);
+                })
+                .catch((error) => {
+                    console.error("Error en fetch posts:", error);
+                    setIsLoading(false);
+                });
+        } else {
+            setIsLoading(false);
+        }
+    }, [user.id, isLoggedIn]); // Reacciona a cambios en el ID de usuario y al estado de autenticación
 
     const addNewPost = async (newPost) => {
         try {
+            if (!isLoggedIn) {
+                console.error("El usuario no está autenticado.");
+                return;
+            }
+
             newPost.ps_us_id = user.id; // Asigna el ID de usuario al nuevo post
 
             const response = await fetch("http://localhost:3000/posts", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
+                    // Incluye el token de autenticación en la solicitud
+                    Authorization: `Bearer ${user.token}`,
                 },
-                body: JSON.stringify(newPost),
+                body: JSON.stringify({ ...newPost, usuario: user.id }),
             });
         
             if (!response.ok) {

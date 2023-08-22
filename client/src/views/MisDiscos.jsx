@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { ProductCard } from '../components';
 import { useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthProvider';
@@ -7,9 +7,10 @@ import { usePost } from '../context/PostProvider';
 export const MisDiscos = () => {
     const [favoritos, setFavoritos] = useState([]);
     const [userDiscos, setUserDiscos] = useState([]); 
+    const [posts, setPosts] = useState([]); // Agrega la declaración del estado 'posts'
     const location = useLocation();
     const { user } = useAuth();
-    const { addedDiscos } = usePost(); 
+    const { addedDiscos } = usePost(); // Obtén los discos del contexto
 
     const categoryFromQuery = new URLSearchParams(location.search).get('category');
     
@@ -37,14 +38,26 @@ export const MisDiscos = () => {
         }
     }, [location.state]);
 
-    // Actualizar el estado con los discos creados por el usuario y los agregados
-    const allUserDiscos = [...userDiscos, ...addedDiscos];
+    // Realizar la solicitud GET a localhost:3000/posts y actualizar el estado 'posts'
+    useEffect(() => {
+        fetch('http://localhost:3000/posts')
+            .then((response) => response.json())
+            .then((data) => {
+                setPosts(data); // Actualizar el estado con los datos de los posts
+            })
+            .catch((error) => {
+                console.error('Error al obtener los datos de localhost:3000/posts', error);
+            });
+    }, []); // El array vacío asegura que esta solicitud se realice solo una vez al cargar el componente
+
+    // Filtrar los discos creados por el usuario y los agregados
+    const allUserDiscos = [...posts, ...addedDiscos]; // Usa los discos del contexto
 
     const discosCreadosPorUsuario = allUserDiscos.filter((disco) => {
         if (categoryFromQuery && user) {
-            return disco.ps_us_id === user.ps_id && disco.ps_category === categoryFromQuery;
+            return disco.ps_us_id === user.id && disco.ps_category === categoryFromQuery;
         } else if (user) {
-            return disco.ps_us_id === user.ps_id;
+            return disco.ps_us_id === user.id;
         } else {
             return false;
         }

@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
-import { Link, NavLink, useNavigate, useLocation } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Form, NavDropdown } from 'react-bootstrap';
 import { useAuth } from '../context/AuthProvider';
 import { DropdownMenu } from './index'; 
-import logo3 from '../../assets/img/logo/logo3.png'
+import logo3 from '../../assets/img/logo/logo3.png';
 
 export const Navbar = () => {
     const { isLoggedIn, name, isRegistered } = useAuth();
@@ -35,8 +35,9 @@ export const Navbar = () => {
     return (
         <nav className="navbar navbar-expand-sm navbar-dark bg-dark p-2 sticky-top">
             <DropdownMenu /> 
-            <Link className="navbar-brand" to="/">
-                <img src={logo3} alt="Logo" style={{ width: '30%', height: 'auto' }} />
+            
+            <Link className="navbar-brand d-inline-block" to="/" >
+                <img src={logo3} alt="Logo" style={{ width: '25%', height: 'auto' }} />
             </Link>
 
             <div className="d-flex align-items-center justify-content-center flex-grow-1">
@@ -57,15 +58,15 @@ export const Navbar = () => {
                     <>
                         <li className="nav-item">
                             <NavDropdown id="dropdown-user" menuVariant="dark" title={name || "Usuario"}>
-                                <NavLink className="dropdown-item" to="/mis-discos">
+                                <Link to="/mis-discos" className="dropdown-item">
                                     Mis discos
-                                </NavLink>
-                                <NavLink className="dropdown-item" to="/agregar-disco">
+                                </Link>
+                                <Link to="/agregar-disco" className="dropdown-item">
                                     Agregar disco
-                                </NavLink>
-                                <NavLink className="dropdown-item" to="/favoritos">
+                                </Link>
+                                <Link to="/favoritos" className="dropdown-item">
                                     Favoritos
-                                </NavLink>
+                                </Link>
                             </NavDropdown>
                         </li>
                         <li className="nav-item">
@@ -77,14 +78,14 @@ export const Navbar = () => {
                 ) : (
                     <>
                         <li className="nav-item">
-                            <NavLink className="nav-link btn" to="/login">
+                            <Link to="/login" className="nav-link btn">
                                 Login
-                            </NavLink>
+                            </Link>
                         </li>
                         <li className="nav-item">
-                            <NavLink className="nav-link btn" to="/signup">
+                            <Link to="/signup" className="nav-link btn">
                                 SignUp
-                            </NavLink>
+                            </Link>
                         </li>
                     </>
                 )}
