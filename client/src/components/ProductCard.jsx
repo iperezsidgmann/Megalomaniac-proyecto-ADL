@@ -48,12 +48,12 @@ export const ProductCard = ({ ps_id, ps_band, ps_album, ps_albumimage, ps_catego
                                 <Link to={`/detail/${ps_id}`} className="btn btn-light">
                                     Detalles
                                 </Link>
-                                {(isLoggedIn || isRegistered) && ( 
+                                {(isLoggedIn || isRegistered) && (
                                     <div onClick={handleFavoriteClick}>
                                         {isFavorite ? (
                                             <AiFillHeart className="text-danger" style={{ fontSize: '2rem' }} />
                                         ) : (
-                                            <AiOutlineHeart  style={{ fontSize: '2rem' }} />
+                                            <AiOutlineHeart style={{ fontSize: '2rem' }} />
                                         )}
                                         <span className={`ml-2 ${isFavorite ? 'text-warning' : 'text-secondary'}`}>
                                             {isFavorite ? <i className="fas fa-star"></i> : <i className="far fa-star"></i>}
