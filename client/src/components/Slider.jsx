@@ -50,11 +50,6 @@ export const Slider = () => {
             {isHovered && (
                 <div className="overlay-images">
                     <img
-                        src="../assets/gif/interference.gif"
-                        alt="Interference"
-                        className='interference-image'
-                    />
-                    <img
                         src="../assets/img/logo/logo1.png"
                         alt="Logo"
                         className='logo-image'
