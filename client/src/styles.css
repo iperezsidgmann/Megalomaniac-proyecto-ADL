@@ -38,7 +38,7 @@ body {
 
 /* Estilos de la imagen del slider */
 .slider-image {
-    max-height: 80vh;
+    max-height: 60vh;
     width: 100%;
     object-fit: cover;
     transition: filter 0.3s;
@@ -51,7 +51,7 @@ body {
 /* Estilos de la superposición de imágenes */
 .overlay-images {
     z-index: 100;
-    opacity: 0;
+    opacity: 0.7;
     transition: opacity 1s, filter 0.3s;
     max-height: 100%;
     display: flex;
@@ -67,7 +67,7 @@ body {
 
 /* Estilos de la imagen del logo en la superposición */
 .logo-image {
-    width: 50%;
+    width: 25%;
     height: auto;
     max-width: 80%;
     max-height: 80%;
@@ -75,4 +75,11 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+}
+
+/*Footer*/
+
+.contact-link {
+    color: white;
+    text-decoration: none; 
 }
