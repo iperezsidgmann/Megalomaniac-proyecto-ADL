@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Carousel from 'react-bootstrap/Carousel';
 import '../styles.css';
 import 'animate.css';
@@ -15,15 +15,14 @@ export const Slider = () => {
         <div
             className='slider-container animate__animated animate__fadeIn'
             onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered}
+            onMouseLeave={() => setIsHovered(false)}
         >
             <Carousel 
-            activeIndex={index} 
-            onSelect={handleSelect}
-            controls={false} 
+                activeIndex={index} 
+                onSelect={handleSelect}
+                controls={false} 
                 indicators={false}
                 interval={5000} 
-            
             >
                 <Carousel.Item>
                     <img
