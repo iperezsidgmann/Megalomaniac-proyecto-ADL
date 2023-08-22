@@ -9,7 +9,7 @@ export const AuthProvider = ({ children }) => {
     const [password, setPassword] = useState('');
     const [name, setName] = useState('');
     const [isRegistered, setIsRegistered] = useState(false);
-    const [user, setUser] = useState(null);
+    const [user, setUser] = useState();
 
     useEffect(() => {
         fetchUsers();
@@ -52,8 +52,13 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
-    const handleLogout = () => {
+    // Función para establecer isLoggedIn en false
+    const setIsLoggedInFalse = () => {
         setIsLoggedIn(false);
+    };
+
+    const handleLogout = () => {
+        setIsLoggedInFalse();
     };
 
     const fetchUsers = async () => {
@@ -71,6 +76,7 @@ export const AuthProvider = ({ children }) => {
 
     const authContextValue = {
         isLoggedIn,
+        setIsLoggedInFalse,
         name,
         setName,
         error,

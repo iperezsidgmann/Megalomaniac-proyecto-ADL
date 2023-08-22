@@ -36,6 +36,52 @@ router.post('/posts', async (req, res) => {
     }
 });
 
+// chatGPT: Agrega la ruta para crear un nuevo post
+// router.post('/posts', tokenVerification, async (req, res) => {
+//     try {
+//         // Obtén el token del encabezado de la solicitud
+//         const token = req.header('Authorization').split('Bearer ')[1];
+        
+//         // Decodifica el token para obtener el correo electrónico del usuario
+//         const { email } = jwt.decode(token);
+
+//         // Busca el usuario en la base de datos por su correo electrónico
+//         const usuario = await obtenerDatosDeUsuario(email);
+
+//         // Verifica que el usuario exista
+//         if (!usuario) {
+//             throw {
+//                 code: 404,
+//                 message: 'No se encontró ningún usuario con este correo electrónico',
+//             };
+//         }
+
+//         // Obtén el id del usuario autenticado
+//         const ps_us_id = usuario.us_id;
+
+//         // Obtén los datos del post del cuerpo de la solicitud
+//         const { band, album, albumImage, category } = req.body;
+
+//         // Crea un objeto con los datos del post incluyendo ps_us_id
+//         const newDisco = {
+//             ps_us_id,
+//             ps_band: band,
+//             ps_album: album,
+//             ps_albumimage: albumImage,
+//             ps_albumyear: albumYear,
+//             ps_category: category,
+//         };
+
+//         // Inserta el nuevo post en la base de datos
+//         await ingresoPosts(newDisco);
+
+//         res.json({ message: 'Post agregado' });
+//     } catch (error) {
+//         res.status(error.code || 500).json({ error: error.message });
+//     }
+// });
+
+
 // Añadir a Favoritos
 router.post('/favoritos', async (req, res) => {
     try {
