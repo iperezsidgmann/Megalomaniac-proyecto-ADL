@@ -20,7 +20,7 @@ export const LoginPage = () => {
 
     return (
         <div className='d-flex justify-content-center align-items-center vh-100'>
-            <div className='col-md-3 mx-auto border border-dark rounded p-5 animate__animated animate__fadeIn'>
+            <div className='col-md-5 mx-auto border border-dark rounded p-5 animate__animated animate__fadeIn'>
                 <h1 className='mt-3'>Login</h1>
                 <Form onSubmit={handleSubmit}>
                     <Form.Group className='mb-3' controlId='formBasicEmail'>

@@ -1,16 +1,11 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import Carousel from 'react-bootstrap/Carousel';
-import  img1_slider  from '../../assets/img/img1_slider.png'
-import  img2_slider  from '../../assets/img/img2_slider.png'
-import  img3_slider  from '../../assets/img/img3_slider.png'
-import  interference  from '../../assets/gif/interference.gif'
-import  logo1  from '../../assets/img/logo/logo1.png'
 import '../styles.css';
 import 'animate.css';
 
 export const Slider = () => {
     const [index, setIndex] = useState(0);
-    const [isHovered, setIsHovered] = useState(false);
+    const [isHovered, setIsHovered] = useState(false); 
 
     const handleSelect = (selectedIndex) => {
         setIndex(selectedIndex);
@@ -22,31 +17,31 @@ export const Slider = () => {
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered}
         >
-            <Carousel
-                activeIndex={index}
-                onSelect={handleSelect}
-                controls={false}
+            <Carousel 
+            activeIndex={index} 
+            onSelect={handleSelect}
+            controls={false} 
                 indicators={false}
-                interval={5000}
-
+                interval={5000} 
+            
             >
                 <Carousel.Item>
                     <img
-                        src={img1_slider}
+                        src='../assets/img/img1_slider.png'
                         alt="First slide"
                         className='slider-image d-block w-100 h-50'
                     />
                 </Carousel.Item>
                 <Carousel.Item>
                     <img
-                        src={img2_slider}
+                        src='../assets/img/img2_slider.png'
                         alt="Second slide"
                         className='slider-image d-block w-100 h-50'
                     />
                 </Carousel.Item>
                 <Carousel.Item>
                     <img
-                        src={img3_slider}
+                        src='../assets/img/img3_slider.png'
                         alt="Third slide"
                         className='slider-image d-block w-100 h-50'
                     />
@@ -55,12 +50,7 @@ export const Slider = () => {
             {isHovered && (
                 <div className="overlay-images">
                     <img
-                        src={interference}
-                        alt="Interference"
-                        className='interference-image'
-                    />
-                    <img
-                        src={logo1}
+                        src="../assets/img/logo/logo1.png"
                         alt="Logo"
                         className='logo-image'
                     />
