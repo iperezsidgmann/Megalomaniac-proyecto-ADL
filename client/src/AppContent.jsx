@@ -1,9 +1,8 @@
 import { Routes, Route } from "react-router-dom";
-import { Navbar, Footer, DetailProduct } from './components/index';
+import { Navbar, Footer, DetailProduct, ProductList } from './components/index';
 import { HomePage, LoginPage, PanelPage, SignupPage, MisDiscos, AgregarDisco, Favoritos, LogoutPage } from "./views/index";
 import { RockPage, PopPage, FolkPage, MetalPage, NotFound } from './pages/index';
 import { useSearchContext } from "./context/SearchProvider";
-import { discos } from "./data/discos";
 import { useAuth } from "./context/AuthProvider";
 
 export const AppContent = () => {
@@ -25,8 +24,9 @@ export const AppContent = () => {
                     <Route path="/rockpage" element={<RockPage />} />
                     <Route path="/poppage" element={<PopPage />} />
                     <Route path="/folkpage" element={<FolkPage />} />
+                    <Route path="product-list" element={<ProductList/> } />
                     <Route path="/metalpage" element={<MetalPage />} />
-                    <Route path="/detail/:id" element={<DetailProduct discos={discos} />} />
+                    <Route path="/detail/:id" element={<DetailProduct />} />
                     {isLoggedIn && (
                         <>
                             <Route path="/mis-discos" element={<MisDiscos />} />

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthProvider';
 import { usePost } from '../context/PostProvider';
@@ -23,26 +23,26 @@ export const AgregarDisco = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
-        if (!band || !album || !albumImage || !category) {
-            alert('Por favor completa todos los campos.');
+    
+        if (!band || !album || !albumImage || !category || typeof user.id !== 'number') {
+            alert('Por favor completa todos los campos y asegúrate de que estás autenticado.');
             return;
         }
-
+    
         const newDisco = {
-            usuario: user.id,
+            ps_us_id: user,
             banda: band,
             album: album,
             albumImage: albumImage,
             categoria: category,
         };
-
-        console.log(newDisco)
+    
+        console.log(newDisco);
         await addNewPost(newDisco);
-
+    
         navigate('/mis-discos');
     };
-
+    
     const categorias = ['Rock', 'Pop', 'Folk', 'Metal'];
 
     return (

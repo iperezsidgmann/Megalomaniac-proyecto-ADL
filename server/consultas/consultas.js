@@ -36,11 +36,17 @@ const obtenerDatosDeUsuario = async (email) => {
     return usuario;
   };
 
-const ingresoFavoritos = async (favoritos) => {
-    let{ idusuario, idpost } = favoritos;
-    const values = [idusuario, idpost];
-    const consultaFavoritos = "INSERT INTO favoritos(fv_us_id, fv_ps_id) VALUES ($1, $2)";
-    await pool.query(consultaFavoritos, values);
+  const ingresoFavoritos = async (favoritos) => {
+    try {
+        let { idusuario, idpost } = favoritos;
+        const values = [idusuario, idpost];
+        const consultaFavoritos = "INSERT INTO favoritos(fv_us_id, fv_ps_id) VALUES ($1, $2)";
+        await pool.query(consultaFavoritos, values);
+        console.log('Favorito insertado correctamente en la base de datos.');
+    } catch (error) {
+        console.error('Error al insertar el favorito en la base de datos:', error);
+        throw error; // Puedes lanzar el error nuevamente si quieres manejarlo en otro lugar.
+    }
 }
 
 const verificarCredenciales = async (email, password) => {
