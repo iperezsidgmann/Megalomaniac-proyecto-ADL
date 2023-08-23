@@ -34,7 +34,7 @@ export const Footer = () => {
                     <p>Todos los derechos reservados.</p>
                 </div>
                 <div className='col-md-4 d-inline-block text-left'>
-                    <h3>Contáctanos</h3>
+                    <h4>Contáctanos</h4>
                     <br />
                     <div className='d-flex flex-column'>
                         <a href="https://www.linkedin.com/in/cristopher-vargas-05465b37/" target="_blank" rel="noopener noreferrer" className='contact-link mb-4'><BsLinkedin style={{ fontSize: '2rem' }} /> cristopherAle</a>
