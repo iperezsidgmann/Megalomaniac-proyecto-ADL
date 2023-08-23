@@ -14,7 +14,7 @@ export const PostProvider = ({ children }) => {
     const { user, isLoggedIn } = useAuth(); // Importa useAuth desde tu contexto de autenticación
 
     useEffect(() => {
-        if (isLoggedIn) {
+        if (isLoggedIn && user) { // Verifica que user esté definido y el usuario esté autenticado
             fetch("http://localhost:3000/posts")
                 .then((response) => {
                     if (!response.ok) {
@@ -35,12 +35,12 @@ export const PostProvider = ({ children }) => {
         } else {
             setIsLoading(false);
         }
-    }, [user.id, isLoggedIn]); // Reacciona a cambios en el ID de usuario y al estado de autenticación
+    }, [user, isLoggedIn]); // Reacciona a cambios en user y al estado de autenticación
 
     const addNewPost = async (newPost) => {
         try {
-            if (!isLoggedIn) {
-                console.error("El usuario no está autenticado.");
+            if (!isLoggedIn || !user) {
+                console.error("El usuario no está autenticado o no está definido.");
                 return;
             }
 
