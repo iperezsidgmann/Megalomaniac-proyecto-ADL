@@ -93,7 +93,7 @@ export const Navbar = () => {
                             <>
                             <div className="container mt-0 pt-0">  
                                 <div className="row">
-                                    <div className="col-sm-2">
+                                    <div className="col-sm-3">
                                         <div className="p-1 text-white">
                                             <li className="nav-item">
                                                 <NavLink className="nav-link btn" to="/login">
@@ -102,11 +102,6 @@ export const Navbar = () => {
                                             </li>
                                         </div>
                                     </div>        
-                                    <div className="col-sm-1">
-                                        <div className="p-1 text-white">
-
-                                        </div>
-                                    </div>       
 
                                     <div className="col-sm-1">
                                         <div className="p-1 text-white">
