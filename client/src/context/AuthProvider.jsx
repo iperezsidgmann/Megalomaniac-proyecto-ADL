@@ -10,6 +10,7 @@ export const AuthProvider = ({ children }) => {
     const [name, setName] = useState('');
     const [isRegistered, setIsRegistered] = useState(false);
     const [user, setUser] = useState();
+    const [token, setToken] = useState(null); // Agregamos el estado del token
 
     useEffect(() => {
         fetchUsers();
@@ -36,11 +37,15 @@ export const AuthProvider = ({ children }) => {
             });
 
             if (response.ok) {
+                const data = await response.json();
+
                 if (action === 'register') {
                     setIsRegistered(true);
                 } else {
                     setIsLoggedIn(true);
+                    setToken(data.token); // Establecemos el token en el estado
                 }
+
                 setEmail('');
                 setPassword('');
                 setError('');
@@ -55,6 +60,7 @@ export const AuthProvider = ({ children }) => {
     // Función para establecer isLoggedIn en false
     const setIsLoggedInFalse = () => {
         setIsLoggedIn(false);
+        setToken(null); // Limpiamos el token al cerrar sesión
     };
 
     const handleLogout = () => {
@@ -85,9 +91,10 @@ export const AuthProvider = ({ children }) => {
         user,
         setUser,
         password,
+        setPassword,
         isRegistered,
         setIsRegistered,
-        setPassword,
+        token, // Pasamos el token en el contexto
         handleSubmit,
         handleLogout,
     };

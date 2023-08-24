@@ -6,14 +6,14 @@ import { Form, Button } from 'react-bootstrap';
 import 'animate.css';
 
 export const AgregarDisco = () => {
-    const { isLoggedIn, user } = useAuth();
+    const { isLoggedIn, token } = useAuth(); // Obtener el token de autenticación desde el contexto
     const { addNewPost } = usePost();
     const navigate = useNavigate();
 
-    const [band, setBand] = useState('');
+    const [banda, setBanda] = useState('');
     const [album, setAlbum] = useState('');
     const [albumImage, setAlbumImage] = useState('');
-    const [category, setCategory] = useState('');
+    const [categoria, setCategoria] = useState('');
 
     useEffect(() => {
         if (!isLoggedIn) {
@@ -23,26 +23,50 @@ export const AgregarDisco = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-    
-        if (!band || !album || !albumImage || !category || typeof user.id !== 'number') {
-            alert('Por favor completa todos los campos y asegúrate de que estás autenticado.');
+
+        if (!banda || !album || !albumImage || !categoria) {
+            alert('Por favor completa todos los campos.');
             return;
         }
-    
+
         const newDisco = {
-            ps_us_id: user,
-            banda: band,
-            album: album,
-            albumImage: albumImage,
-            categoria: category,
+            banda,
+            album,
+            albumImage,
+            categoria,
         };
-    
-        console.log(newDisco);
-        await addNewPost(newDisco);
-    
-        navigate('/mis-discos');
+
+        // Asegúrate de que el token esté presente antes de enviar la solicitud
+        if (token) {
+            try {
+                const response = await fetch("http://localhost:3000/posts", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        // Incluye el token de autenticación en la solicitud
+                        Authorization: `Bearer ${token}`,
+                    },
+                    body: JSON.stringify(newDisco),
+                });
+            
+                if (!response.ok) {
+                    console.error("Error en la respuesta del servidor:", response);
+                    throw new Error("Error al agregar el disco");
+                }
+            
+                // Redirige al usuario a la página de sus discos
+                navigate('/mis-discos');
+            } catch (error) {
+                console.error("Error al agregar el disco:", error);
+                alert('Error al agregar el disco. Por favor, inténtalo de nuevo más tarde.');
+            }
+        } else {
+            // Manejo de error si no hay token (el usuario no está autenticado)
+            alert('No estás autenticado. Inicia sesión para agregar un disco.');
+        }
     };
-    
+
+        
     const categorias = ['Rock', 'Pop', 'Folk', 'Metal'];
 
     return (
@@ -53,8 +77,8 @@ export const AgregarDisco = () => {
                     <Form.Label>Banda:</Form.Label>
                     <Form.Control
                         type="text"
-                        value={band}
-                        onChange={(e) => setBand(e.target.value)}
+                        value={banda}
+                        onChange={(e) => setBanda(e.target.value)}
                         required
                     />
                 </Form.Group>
@@ -79,8 +103,8 @@ export const AgregarDisco = () => {
                 <Form.Group className="mb-3">
                     <Form.Label>Categoría:</Form.Label>
                     <Form.Select
-                        value={category}
-                        onChange={(e) => setCategory(e.target.value)}
+                        value={categoria}
+                        onChange={(e) => setCategoria(e.target.value)}
                         required
                     >
                         <option value="" disabled>Seleccionar Categoría</option>
