@@ -1,13 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthProvider';
-import { usePost } from '../context/PostProvider';
 import { Form, Button } from 'react-bootstrap';
 import 'animate.css';
 
 export const AgregarDisco = () => {
     const { isLoggedIn, token } = useAuth(); // Obtener el token de autenticación desde el contexto
-    const { addNewPost } = usePost();
     const navigate = useNavigate();
 
     const [banda, setBanda] = useState('');

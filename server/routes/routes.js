@@ -24,7 +24,7 @@ router.post('/usuarios', async (req, res) => {
   try {
     const usuario = req.body;
     await registrarUsuario(usuario);
-    res.send('Usuario registrado');
+    res.json({ message: 'Usuario registrado', name: usuario.name });
   } catch (error) {
     console.error(error);
     res.status(500).send('Error interno del servidor');
@@ -33,35 +33,35 @@ router.post('/usuarios', async (req, res) => {
 
 // Agregar nuevo post (disco)
 router.post('/posts', tokenVerification, async (req, res) => {
-    try {
-      const { email } = req.user;
-      const usuario = await obtenerDatosDeUsuario(email);
-  
-      if (!usuario) {
-        throw {
-          code: 404,
-          message: 'No se encontró ningún usuario con este correo electrónico',
-        };
-      }
-  
-      const ps_us_id = usuario.us_id;
-      const { banda, album, albumImage, categoria } = req.body;
-      const newDisco = {
-        ps_us_id,
-        ps_band: banda,
-        ps_album: album,
-        ps_albumimage: albumImage,
-        ps_category: categoria,
+  try {
+    const { email } = req.user;
+    const usuario = await obtenerDatosDeUsuario(email);
+
+    if (!usuario) {
+      throw {
+        code: 404,
+        message: 'No se encontró ningún usuario con este correo electrónico',
       };
-  
-      await ingresoPosts(newDisco);
-      res.json({ message: 'Post agregado' });
-    } catch (error) {
-      console.error(error);
-      res.status(error.code || 500).json({ error: error.message || 'Error interno del servidor' });
     }
-  });
-  
+
+    const ps_us_id = usuario.us_id;
+    const { banda, album, albumImage, categoria } = req.body;
+    const newDisco = {
+      ps_us_id,
+      ps_band: banda,
+      ps_album: album,
+      ps_albumimage: albumImage,
+      ps_category: categoria,
+    };
+
+    await ingresoPosts(newDisco);
+    res.json({ message: 'Post agregado' });
+  } catch (error) {
+    console.error(error);
+    res.status(error.code || 500).json({ error: error.message || 'Error interno del servidor' });
+  }
+});
+
 // Añadir a Favoritos
 router.post('/favoritos', async (req, res) => {
   try {
@@ -135,10 +135,11 @@ router.get('/posts/:id', async (req, res) => {
 router.get('/usuarios_posts/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    const consulta = `SELECT us_email, ps_id, ps_band, ps_album, ps_albumimage, ps_albumyear, ps_category
-      FROM posts
-      INNER JOIN usuarios ON ps_us_id = us_id
-      WHERE us_id = $1`;
+    const consulta = `
+    SELECT us_email, ps_id, ps_band, ps_album, ps_albumimage, ps_albumyear, ps_category, ps_us_id
+    FROM posts
+    INNER JOIN usuarios ON ps_us_id = us_id
+    WHERE ps_us_id = $1`;
     const values = [id];
     const { rows } = await pool.query(consulta, values);
     res.json(rows);
@@ -419,7 +420,7 @@ module.exports = router;
 // })
 
 
-// // Ver todos los Favoritos 
+// // Ver todos los Favoritos
 // router.get('/favoritos/', async (req, res) => {
 //     try {
 //         const consulta = "select fv_id, us_id, us_email, ps_band,  ps_album, ps_albumimage, ps_albumyear, ps_category from favoritos inner join usuarios on fv_us_id = us_id inner join posts on fv_ps_id = ps_id";
@@ -430,7 +431,7 @@ module.exports = router;
 //     }
 // })
 
-// // Ver Favoritos por Usuario 
+// // Ver Favoritos por Usuario
 // router.get('/favoritos/:id', async (req, res) => {
 //     try {
 //         const { id } = req.params;
@@ -506,7 +507,7 @@ module.exports = router;
 //     }
 // })
 
-// //Eliminacion de Favoritos 
+// //Eliminacion de Favoritos
 
 // router.delete('/favoritos/:id', async (req, res) => {
 //     try {

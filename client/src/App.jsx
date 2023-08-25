@@ -6,18 +6,18 @@ import { PostProvider } from "./context/PostProvider";
 import { AppContent } from "./AppContent";
 
 export const App = () => {
-    
+
     return (
-            <AuthProvider>
+        <AuthProvider>
+            <PostProvider>
                 <FavoriteProvider>
                     <SearchProvider>
-                        <PostProvider>
-                            <BrowserRouter>
-                                <AppContent />
-                            </BrowserRouter>
-                        </PostProvider>
+                        <BrowserRouter>
+                            <AppContent />
+                        </BrowserRouter>
                     </SearchProvider>
                 </FavoriteProvider>
-            </AuthProvider>
+            </PostProvider>
+        </AuthProvider>
     );
 };

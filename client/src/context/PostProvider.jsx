@@ -33,6 +33,7 @@ export const PostProvider = ({ children }) => {
                     setIsLoading(false);
                 });
         } else {
+            console.log('el usuario no está autenticado')
             setIsLoading(false);
         }
     }, [user, isLoggedIn]); // Reacciona a cambios en user y al estado de autenticación
