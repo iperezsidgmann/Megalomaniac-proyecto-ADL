@@ -24,7 +24,7 @@ export const AppContent = () => {
                     <Route path="/rockpage" element={<RockPage />} />
                     <Route path="/poppage" element={<PopPage />} />
                     <Route path="/folkpage" element={<FolkPage />} />
-                    <Route path="product-list" element={<ProductList/> } />
+                    <Route path="/product-list" element={<ProductList/> } />
                     <Route path="/metalpage" element={<MetalPage />} />
                     <Route path="/detail/:id" element={<DetailProduct />} />
                     {isLoggedIn && (

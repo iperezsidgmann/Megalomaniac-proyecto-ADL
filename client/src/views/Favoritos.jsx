@@ -1,10 +1,8 @@
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState } from 'react';
 import { ProductCard } from '../components';
-import { useFavorite } from '../context/FavoriteProvider';
 import { useAuth } from '../context/AuthProvider';
 
 export const Favoritos = () => {
-    const { favoriteItems, onRemoveFavorite } = useFavorite();
     const [favoritos, setFavoritos] = useState([]);
     const { isLoggedIn, authToken } = useAuth(); // Obtén el estado de autenticación y el token desde el contexto AuthProvider
 

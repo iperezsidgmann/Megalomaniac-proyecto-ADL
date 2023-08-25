@@ -6,7 +6,7 @@ import { DropdownMenu } from './index';
 import logo3 from '../../assets/img/logo/logo3.png'
 
 export const Navbar = () => {
-    const { isLoggedIn, name, isRegistered } = useAuth();
+    const { isLoggedIn, name, isRegistered, isLoading } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
     const [searchTerm, setSearchTerm] = useState('');
@@ -27,6 +27,10 @@ export const Navbar = () => {
         const searchTermFromURL = searchParams.get('search') || '';
         setSearchTerm(searchTermFromURL);
     }, [location.search]);
+
+    if (isLoading) {
+        return <div>Cargando...</div>;
+    }
 
     if (location.pathname === '/login' || location.pathname === '/signup') {
         return null;
@@ -120,13 +124,6 @@ export const Navbar = () => {
                     </div>
                 </div>
             </div>
-
-
-
         </nav>
     );
 };
-  {/* 
-            <div className="d-flex align-items-center justify-content-center flex-grow-1">
-                
-            </div> */}
