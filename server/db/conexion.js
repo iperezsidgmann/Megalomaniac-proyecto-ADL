@@ -12,16 +12,15 @@ require("dotenv").config();
 
 
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: true
+  connectionString: process.env.DATABASE_URL
 })
 
 
- const getData = async () => {
+/*  const getData = async () => {
   const consulta = 'SELECT NOW()';
   const { rows } = await pool.query(consulta);
   console.log(rows)
 }
-getData()
+getData() */
  
 module.exports = pool;
