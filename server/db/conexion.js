@@ -8,5 +8,20 @@ const pool = new Pool({
   password: process.env.DB_PASSWORD,
   allowExitOnIdle: true,
 });
+ 
 
+/*
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: true
+})
+*/
+
+/* const getData = async () => {
+  const consulta = 'SELECT NOW()';
+  const { rows } = await pool.query(consulta);
+  console.log(rows)
+}
+getData()
+ */
 module.exports = pool;
