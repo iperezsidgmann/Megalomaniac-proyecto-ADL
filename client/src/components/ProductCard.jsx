@@ -26,9 +26,8 @@ export const ProductCard = ({ ps_id, ps_band, ps_album, ps_albumimage, ps_catego
             setIsFavorite(true);
             onAddFavorite(ps_id);
 
-            // Enviamos el favorito al servidor con el ID del usuario y el ID del producto
-            const userId = user.id; // Supongamos que el objeto de usuario tiene una propiedad "id"
-            const productId = ps_id; // ID del producto
+            const userId = user.id; 
+            const productId = ps_id; 
             
             fetch('http://localhost:3000/favoritos', {
                 method: 'POST',
@@ -47,7 +46,6 @@ export const ProductCard = ({ ps_id, ps_band, ps_album, ps_albumimage, ps_catego
                     return response.json();
                 })
                 .then((data) => {
-                    // Manejar la respuesta del servidor aquí
                     console.log('Favorito guardado en el servidor:', data);
                 })
                 .catch((error) => {
