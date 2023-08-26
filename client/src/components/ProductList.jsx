@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
-import { ProductCard } from './index';
 import { ListGroup } from 'react-bootstrap';
 import { useSearchContext } from '../context/SearchProvider';
+import { ProductCard } from './index';
 import 'animate.css';
+import { useLocation } from 'react-router-dom';
 
 const navigationItems = [
     { title: 'Rock', path: '/rockpage' },
@@ -15,24 +15,47 @@ const navigationItems = [
 export const ProductList = () => {
     const location = useLocation();
     const searchTerm = new URLSearchParams(location.search).get('search');
-    const searchFunction = useSearchContext(); 
-    const [filteredDiscos, setFilteredDiscos] = useState([]);
+    const searchFunction = useSearchContext();
     const [selectedCategory, setSelectedCategory] = useState(null);
+    const [filteredDiscos, setFilteredDiscos] = useState([]);
+    const [isFetching, setIsFetching] = useState(true);
+    const [fetchError, setFetchError] = useState(null);
 
     useEffect(() => {
-        let filtered = searchFunction(""); // Inicialmente, obtén todos los discos
 
-        if (searchTerm) {
-            filtered = searchFunction(searchTerm); // Usa la función de búsqueda del contexto
-        }
+        const fetchPosts = async () => {
+            try {
+                setIsFetching(true);
+                setFetchError(null);
 
-        if (selectedCategory) {
-            filtered = filtered.filter(
-                (disco) => disco.category.toLowerCase() === selectedCategory.toLowerCase()
-            );
-        }
+                const response = await fetch("http://localhost:3000/posts");
+                if (!response.ok) {
+                    throw new Error('No hay respuesta del servidor');
+                }
 
-        setFilteredDiscos(filtered);
+                setIsFetching(false);
+
+                let filtered = searchFunction('');
+
+                if (searchTerm) {
+                    filtered = searchFunction(searchTerm);
+                }
+
+                if (selectedCategory) {
+                    filtered = filtered.filter(
+                        (disco) => disco.ps_category && disco.ps_category.toLowerCase() === selectedCategory.toLowerCase()
+                    );
+                }
+
+                setFilteredDiscos(filtered);
+            } catch (error) {
+                console.error("Error fetching posts:", error);
+                setIsFetching(false);
+                setFetchError("Error fetching data");
+            }
+        };
+
+        fetchPosts();
     }, [searchTerm, selectedCategory, searchFunction]);
 
     const handleCategoryClick = (category) => {
@@ -49,7 +72,7 @@ export const ProductList = () => {
                     <ListGroup className="list-group">
                         <ListGroup.Item
                             action variant="dark"
-                            className={`list-group-item list-group-item-action  ${selectedCategory === null ? 'active' : ''
+                            className={`list-group-item list-group-item-action ${selectedCategory === null ? 'active' : ''
                                 }`}
                             onClick={() => handleCategoryClick(null)}
                         >
@@ -68,14 +91,17 @@ export const ProductList = () => {
                         ))}
                     </ListGroup>
                 </div>
-
                 <div className="col-md-10 col-sm-8 mt-3">
-                    {filteredDiscos.length === 0 ? (
+                    {isFetching ? (
+                        <div>Loading...</div>
+                    ) : fetchError ? (
+                        <div>{fetchError}</div>
+                    ) : filteredDiscos.length === 0 ? (
                         <div>No se encontraron resultados.</div>
                     ) : (
                         <div className="row row-cols-1 row-cols-md-3 g-3 m-1 animate__animated animate__fadeIn">
                             {filteredDiscos.map((disco) => (
-                                <ProductCard  key={disco.id} {...disco} />
+                                <ProductCard key={disco.ps_id} {...disco} />
                             ))}
                         </div>
                     )}

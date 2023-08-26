@@ -5,30 +5,54 @@ import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
 import { useFavorite } from '../context/FavoriteProvider';
 import 'animate.css';
 
-
-export const ProductCard = ({ id, band, album, albumImage, category }) => {
-
+export const ProductCard = ({ ps_id, ps_band, ps_album, ps_albumimage, ps_category }) => {
     const [isFavorite, setIsFavorite] = useState(false);
-    const { isLoggedIn, isRegistered } = useAuth();
-    const { onRemoveFavorite, onAddFavorite,favoriteItems } = useFavorite();
+    const { isLoggedIn, user, isRegistered } = useAuth(); // Supongamos que el objeto de usuario tiene una propiedad "id"
+    const { onRemoveFavorite, onAddFavorite, favoriteItems } = useFavorite();
 
     useEffect(() => {
-        setIsFavorite(favoriteItems.includes(id));
-    }, [favoriteItems, id]);
+        setIsFavorite(favoriteItems.includes(ps_id));
+    }, [favoriteItems, ps_id]);
 
     const handleFavoriteClick = () => {
         if (!isLoggedIn) {
             return;
         }
 
-        setIsFavorite(!isFavorite);
-
         if (isFavorite) {
             setIsFavorite(false);
-            onRemoveFavorite(id);
+            onRemoveFavorite(ps_id);
         } else {
             setIsFavorite(true);
-            onAddFavorite(id);
+            onAddFavorite(ps_id);
+
+            // Enviamos el favorito al servidor con el ID del usuario y el ID del producto
+            const userId = user.id; // Supongamos que el objeto de usuario tiene una propiedad "id"
+            const productId = ps_id; // ID del producto
+            
+            fetch('http://localhost:3000/favoritos', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    idusuario: userId,
+                    idpost: productId,
+                }),
+            })
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error(`La solicitud no fue exitosa (${response.status} - ${response.statusText})`);
+                    }
+                    return response.json();
+                })
+                .then((data) => {
+                    // Manejar la respuesta del servidor aquí
+                    console.log('Favorito guardado en el servidor:', data);
+                })
+                .catch((error) => {
+                    console.error('Error al guardar el favorito en el servidor:', error);
+                });
         }
     };
 
@@ -37,27 +61,27 @@ export const ProductCard = ({ id, band, album, albumImage, category }) => {
             <div className="card bg-dark text-light h-100 mb-1">
                 <div className="row no-gutters">
                     <div className="d-flex align-items-center justify-content-center">
-                        <img src={albumImage} className="card-img" alt={band} style={{ width: '100%', height: '350px', objectFit: 'cover' }} />
+                        <img src={ps_albumimage} className="card-img" alt={ps_band} style={{ width: '100%', height: '350px', objectFit: 'cover' }} />
                     </div>
                     <div className="">
                         <div className="card-body d-flex flex-column justify-content-between h-100">
                             <div>
-                                <h3 className="card-title">{band}</h3>
-                                <p className="card-text text-light">Album: {album} </p>
+                                <h3 className="card-title">{ps_band}</h3>
+                                <p className="card-text text-light">Album: {ps_album} </p>
                                 <p className="card-text text-light">
-                                    <small className="text-light">Categoría: {category} </small>
+                                    <small className="text-light">Categoría: {ps_category} </small>
                                 </p>
                             </div>
                             <div className="d-flex justify-content-between align-items-center mt-3">
-                                <Link to={`/detail/${id}`} className="btn btn-light">
+                                <Link to={`/detail/${ps_id}`} className="btn btn-light">
                                     Detalles
                                 </Link>
-                                {(isLoggedIn || isRegistered) && ( 
+                                {(isLoggedIn || isRegistered) && (
                                     <div onClick={handleFavoriteClick}>
                                         {isFavorite ? (
                                             <AiFillHeart className="text-danger" style={{ fontSize: '2rem' }} />
                                         ) : (
-                                            <AiOutlineHeart  style={{ fontSize: '2rem' }} />
+                                            <AiOutlineHeart style={{ fontSize: '2rem' }} />
                                         )}
                                         <span className={`ml-2 ${isFavorite ? 'text-warning' : 'text-secondary'}`}>
                                             {isFavorite ? <i className="fas fa-star"></i> : <i className="far fa-star"></i>}

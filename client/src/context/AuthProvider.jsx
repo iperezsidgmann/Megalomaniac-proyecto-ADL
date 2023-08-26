@@ -1,5 +1,4 @@
-import { createContext, useState, useContext } from 'react';
-import { fetchUsers } from '../data/api';
+import { createContext, useState, useContext, useEffect } from 'react';
 
 const AuthContext = createContext();
 
@@ -10,80 +9,102 @@ export const AuthProvider = ({ children }) => {
     const [password, setPassword] = useState('');
     const [name, setName] = useState('');
     const [isRegistered, setIsRegistered] = useState(false);
+    const [user, setUser] = useState();
+    const [token, setToken] = useState(null);
+    const [isLoading, setIsLoading] = useState(false); 
 
-    const handleLogin = async () => {
+    useEffect(() => {
+        fetchUsers();
+    }, []);
 
-        try {
-            const users = await fetchUsers(); // Llama a la función para obtener la lista de usuarios
-
-            const existingUser = users.find(user => user.email === email && user.password === password);
-
-            if (existingUser) {
-                setIsLoggedIn(true);
-                setError('');
-            } else {
-                setError('Credenciales de inicio de sesión incorrectas');
-            }
-
-        } catch (error) {
-            setError('Error al realizar el inicio de sesión');
-        }
-    };
-
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e, action) => {
         e.preventDefault();
 
-        // Validación de campos
         if (!email.trim() || !password.trim()) {
             setError('Los datos ingresados no son válidos.');
             return;
         }
 
         setError(false);
-        setIsRegistered(true);
+        setIsLoading(true); // Comenzar la carga
 
         try {
-            // Envía los datos del nuevo usuario al servidor para registrarlo en la base de datos
-            await fetch('/register', {
+            const response = await fetch(action === 'register' ? 'http://localhost:3000/usuarios' : 'http://localhost:3000/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({ name, email, password }),
             });
-    
-            // Simula una autenticación exitosa después de 1 segundo
-            setTimeout(() => {
-                setIsRegistered(false);
-                setIsLoggedIn(true);
-                setError('');
+
+            if (response.ok) {
+                const data = await response.json();
+
+                if (action === 'register') {
+                    setIsRegistered(true);
+                    setName(data.name);
+                } else {
+                    setIsLoggedIn(true);
+                    setName(data.name);
+                }
+
                 setEmail('');
                 setPassword('');
-                handleLogin();
-            }, 1500);
+                setError('');
+
+            } else {
+                setError('Credenciales de inicio de sesión incorrectas');
+            }
+
         } catch (error) {
-            setError('Error al realizar el registro');
+            setError('Error al realizar el registro o inicio de sesión');
+        } finally {
+            setIsLoading(false); // Finalizar la carga, ya sea con éxito o error
         }
     };
 
-    const handleLogout = () => {
+    const setIsLoggedInFalse = () => {
         setIsLoggedIn(false);
+        setToken(null);
+        setName(''); 
+    };
+
+    const handleLogout = () => {
+        setIsLoggedInFalse();
+    };
+
+    const fetchUsers = async () => {
+        try {
+            const response = await fetch('http://localhost:3000/usuarios');
+            if (!response.ok) {
+                throw new Error('No se pudo obtener la lista de usuarios');
+            }
+            const data = await response.json();
+            setUser(data);
+        } catch (error) {
+            console.error('Error al obtener la lista de usuarios:', error);
+        }
     };
 
     const authContextValue = {
         isLoggedIn,
+        setIsLoggedIn,
+        setIsLoggedInFalse,
         name,
         setName,
         error,
         email,
         setEmail,
+        user,
+        setUser,
         password,
+        setPassword,
         isRegistered,
         setIsRegistered,
-        setPassword,
+        token,
         handleSubmit,
         handleLogout,
-        handleLogin,
+        isLoading, // Agregar el estado de carga al contexto
     };
 
     return <AuthContext.Provider value={authContextValue}>{children}</AuthContext.Provider>;

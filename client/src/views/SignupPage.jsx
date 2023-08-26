@@ -1,9 +1,8 @@
+import { useEffect } from "react";
 import { Form, Button } from "react-bootstrap";
 import { useAuth } from "../context/AuthProvider";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
 import 'animate.css';
-
 
 export const SignupPage = () => {
     const { error, email, setEmail, password, setPassword, handleSubmit, isRegistered, name, setName } = useAuth();
@@ -23,7 +22,7 @@ export const SignupPage = () => {
         <div className='d-flex justify-content-center align-items-center vh-100' >
             <div className='col-md-3 mx-auto border border-dark rounded p-5 animate__animated animate__fadeIn'>
                 <h1 className='mt-3'>Regístrate</h1>
-                <Form onSubmit={handleSubmit}>
+                <Form onSubmit={(e) => handleSubmit(e, 'register')}>
                     <Form.Group className="mb-3" controlId="formBasicName">
                         <Form.Label>Nombre</Form.Label>
                         <Form.Control

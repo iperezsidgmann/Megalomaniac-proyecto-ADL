@@ -1,54 +1,56 @@
 import { useState, useEffect } from 'react';
-import { ProductCard } from '../components';
-import { useLocation } from 'react-router-dom';
+import { ProductCard } from '../components/index';
+import { useAuth } from '../context/AuthProvider';
+import { usePost } from '../context/PostProvider';
 
 export const MisDiscos = () => {
-    const [favoritos, setFavoritos] = useState([]);
-    const [misDiscos, setMisDiscos] = useState([]);
-    const location = useLocation();
-
-    const agregarFavorito = (disco) => {
-        setFavoritos([...favoritos, disco]);
-    };
-
-    const quitarFavorito = (id) => {
-        const nuevosFavoritos = favoritos.filter((disco) => disco.id !== id);
-        setFavoritos(nuevosFavoritos);
-    };
-
-    const agregarDisco = (disco) => {
-        setMisDiscos([...misDiscos, disco]); // Actualiza el estado de misDiscos
-    };
-
-    const eliminarDisco = (id) => {
-        const nuevosDiscos = misDiscos.filter((disco) => disco.id !== id);
-        setMisDiscos(nuevosDiscos);
-    };
+    const [posts, setPosts] = useState([]);
+    const { user } = useAuth();
+    const { addedDiscos } = usePost();
 
     useEffect(() => {
-        if (location.state && location.state.newDisco) {
-            agregarDisco(location.state.newDisco);
-        }
-    }, [location.state]);
+        // Realizar la solicitud GET al servidor para obtener los discos del usuario
+        const fetchUserDiscos = async () => {
+            try {
+                const response = await fetch(`http://localhost:3000/usuarios_posts/${user.id}`);
+                if (!response.ok) {
+                    throw new Error('Error al obtener los discos del usuario');
+                }
+                const data = await response.json();
+                setPosts(data);
+            } catch (error) {
+                console.error('Error al obtener los discos del usuario', error);
+            }
+        };
 
-    
+        if (user.id) { 
+            fetchUserDiscos();
+        }
+    }, [user.id]);
+
+    // Filtrar los discos creados por el usuario y los agregados
+    const allUserDiscos = [...posts, ...addedDiscos];
+
+    const discosCreadosPorUsuario = allUserDiscos.filter((disco) => {
+        if (user) {
+            return disco.ps_us_id === user.id;
+        } else {
+            return false;
+        }
+    });
+
     return (
         <div className="container mt-5">
             <h2>Mis Discos</h2>
             <div className="row">
-                {misDiscos.map((disco) => (
+                {discosCreadosPorUsuario.map((disco) => (
                     <ProductCard
-                        key={disco.id}
-                        id={disco.id}
-                        band={disco.band}
-                        album={disco.album}
-                        albumImage={disco.albumImage}
-                        category={disco.category}
-                        isFavorite={favoritos.some((fav) => fav.id === disco.id)}
-                        isUserCreated={disco.isUserCreated}
-                        onAddFavorite={() => agregarFavorito(disco)}
-                        onRemoveFavorite={() => quitarFavorito(disco.id)}
-                        onDelete={() => eliminarDisco(disco.id)}
+                        key={disco.ps_id}
+                        ps_id={disco.ps_id}
+                        ps_band={disco.ps_band}
+                        ps_album={disco.ps_album}
+                        ps_albumimage={disco.ps_albumimage}
+                        ps_category={disco.ps_category}
                     />
                 ))}
             </div>
