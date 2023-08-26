@@ -76,15 +76,15 @@ export const Navbar = () => {
                             <>
                                 <li className="nav-item">
                                     <NavDropdown id="dropdown-user" menuVariant="dark" title={name || "Usuario"}>
-                                        <NavLink className="dropdown-item" to="/mis-discos">
+                                        {/* <NavLink className="dropdown-item" to="/mis-discos">
                                             Mis discos
-                                        </NavLink>
+                                        </NavLink> */}
                                         <NavLink className="dropdown-item" to="/agregar-disco">
                                             Agregar disco
                                         </NavLink>
-                                        <NavLink className="dropdown-item" to="/favoritos">
+                                        {/* <NavLink className="dropdown-item" to="/favoritos">
                                             Favoritos
-                                        </NavLink>
+                                        </NavLink> */}
                                     </NavDropdown>
                                 </li>
                                 <li className="nav-item">
