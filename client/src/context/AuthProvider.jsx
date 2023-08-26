@@ -10,8 +10,7 @@ export const AuthProvider = ({ children }) => {
     const [name, setName] = useState('');
     const [isRegistered, setIsRegistered] = useState(false);
     const [user, setUser] = useState();
-    const [token, setToken] = useState(null);
-    const [isLoading, setIsLoading] = useState(false); 
+    const [token, setToken] = useState(null); // Agregamos el estado del token
 
     useEffect(() => {
         fetchUsers();
@@ -26,7 +25,7 @@ export const AuthProvider = ({ children }) => {
         }
 
         setError(false);
-        setIsLoading(true); // Comenzar la carga
+        setIsRegistered(action === 'register');
 
         try {
             const response = await fetch(action === 'register' ? 'http://localhost:3000/usuarios' : 'http://localhost:3000/login', {
@@ -42,31 +41,26 @@ export const AuthProvider = ({ children }) => {
 
                 if (action === 'register') {
                     setIsRegistered(true);
-                    setName(data.name);
                 } else {
                     setIsLoggedIn(true);
-                    setName(data.name);
+                    setToken(data.token); // Establecemos el token en el estado
                 }
 
                 setEmail('');
                 setPassword('');
                 setError('');
-
             } else {
                 setError('Credenciales de inicio de sesión incorrectas');
             }
-
         } catch (error) {
             setError('Error al realizar el registro o inicio de sesión');
-        } finally {
-            setIsLoading(false); // Finalizar la carga, ya sea con éxito o error
         }
     };
 
+    // Función para establecer isLoggedIn en false
     const setIsLoggedInFalse = () => {
         setIsLoggedIn(false);
-        setToken(null);
-        setName(''); 
+        setToken(null); // Limpiamos el token al cerrar sesión
     };
 
     const handleLogout = () => {
@@ -101,10 +95,9 @@ export const AuthProvider = ({ children }) => {
         setPassword,
         isRegistered,
         setIsRegistered,
-        token,
+        token, 
         handleSubmit,
         handleLogout,
-        isLoading, // Agregar el estado de carga al contexto
     };
 
     return <AuthContext.Provider value={authContextValue}>{children}</AuthContext.Provider>;
