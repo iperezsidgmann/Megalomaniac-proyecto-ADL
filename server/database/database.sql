@@ -93,3 +93,21 @@ Insert Into Favoritos (fv_us_id, fv_ps_id) values(3,20);
 Insert Into Favoritos (fv_us_id, fv_ps_id) values(2,7);
 Insert Into Favoritos (fv_us_id, fv_ps_id) values(1,1);
 Insert Into Favoritos (fv_us_id, fv_ps_id) values(1,2);
+
+/*otros*/ 
+
+Insert Into Favoritos (fv_us_id, fv_ps_id) values(1,22);
+Insert Into Favoritos (fv_us_id, fv_ps_id) values(1,23);
+Insert Into Favoritos (fv_us_id, fv_ps_id) values(1,24);
+Insert Into Favoritos (fv_us_id, fv_ps_id) values(1,25);
+Insert Into Favoritos (fv_us_id, fv_ps_id) values(1,26);
+Insert Into Favoritos (fv_us_id, fv_ps_id) values(2,27);
+Insert Into Favoritos (fv_us_id, fv_ps_id) values(2,28);
+Insert Into Favoritos (fv_us_id, fv_ps_id) values(2,29);
+Insert Into Favoritos (fv_us_id, fv_ps_id) values(2,30);
+Insert Into Favoritos (fv_us_id, fv_ps_id) values(2,31);
+Insert Into Favoritos (fv_us_id, fv_ps_id) values(3,32);
+Insert Into Favoritos (fv_us_id, fv_ps_id) values(3,33);
+Insert Into Favoritos (fv_us_id, fv_ps_id) values(3,34);
+Insert Into Favoritos (fv_us_id, fv_ps_id) values(3,35);
+Insert Into Favoritos (fv_us_id, fv_ps_id) values(3,36);
