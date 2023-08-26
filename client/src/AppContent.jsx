@@ -29,9 +29,9 @@ export const AppContent = () => {
                     <Route path="/detail/:id" element={<DetailProduct />} />
                     {isLoggedIn && (
                         <>
-                            <Route path="/mis-discos" element={<MisDiscos />} />
+                            {/* <Route path="/mis-discos" element={<MisDiscos />} /> */}
                             <Route path="/agregar-disco" element={<AgregarDisco />} />
-                            <Route path="/favoritos" element={<Favoritos />} />
+                            {/* <Route path="/favoritos" element={<Favoritos />} /> */}
                         </>
                     )}
                     <Route path="*" element={<NotFound />} />
