@@ -12,7 +12,7 @@ export const MisDiscos = () => {
         // Realizar la solicitud GET al servidor para obtener los discos del usuario
         const fetchUserDiscos = async () => {
             try {
-                const response = await fetch(`http://localhost:3000/usuarios_posts/${user.id}`);
+                const response = await fetch(`https://backend-megalomaniac.onrender.com/usuarios_posts/${user.id}`);
                 if (!response.ok) {
                     throw new Error('Error al obtener los discos del usuario');
                 }

@@ -28,7 +28,7 @@ export const AuthProvider = ({ children }) => {
         setIsRegistered(action === 'register');
 
         try {
-            const response = await fetch(action === 'register' ? 'http://localhost:3000/usuarios' : 'http://localhost:3000/login', {
+            const response = await fetch(action === 'register' ? 'https://backend-megalomaniac.onrender.com/usuarios' : 'https://backend-megalomaniac.onrender.com/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -69,7 +69,7 @@ export const AuthProvider = ({ children }) => {
 
     const fetchUsers = async () => {
         try {
-            const response = await fetch('http://localhost:3000/usuarios');
+            const response = await fetch('https://backend-megalomaniac.onrender.com/usuarios');
             if (!response.ok) {
                 throw new Error('No se pudo obtener la lista de usuarios');
             }
