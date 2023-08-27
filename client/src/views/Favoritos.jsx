@@ -10,7 +10,7 @@ export const Favoritos = () => {
         // Verifica si el usuario está autenticado antes de hacer la llamada a la API
         if (isLoggedIn) {
             // Realiza la solicitud a la API solo si el usuario está autenticado
-            fetch('http://localhost:3000/favoritos', {
+            fetch('https://backend-megalomaniac.onrender.com/favoritos', {
                 method: 'GET',
                 headers: {
                     'Authorization': `Bearer ${authToken}` // Usa el token de autenticación almacenado en el contexto

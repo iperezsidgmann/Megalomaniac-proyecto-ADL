@@ -12,7 +12,7 @@ export const SearchProvider = ({ children }) => {
 
     useEffect(() => {
         try {
-            fetch("http://localhost:3000/posts")
+            fetch("https://backend-megalomaniac.onrender.com/posts")
                 .then((response) => {
                     if (!response.ok) {
                         throw new Error('Error de respuesta');

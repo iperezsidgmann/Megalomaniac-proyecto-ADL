@@ -29,7 +29,7 @@ export const ProductCard = ({ ps_id, ps_band, ps_album, ps_albumimage, ps_catego
             const userId = user.id; 
             const productId = ps_id; 
             
-            fetch('http://localhost:3000/favoritos', {
+            fetch('https://backend-megalomaniac.onrender.com/favoritos', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
