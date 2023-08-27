@@ -52,8 +52,8 @@ export const AgregarDisco = () => {
                     throw new Error("Error al agregar el disco");
                 }
             
-                // Redirige al usuario a la página de sus discos
-                navigate('/mis-discos');
+                
+                navigate('/');
             } catch (error) {
                 console.error("Error al agregar el disco:", error);
                 alert('Error al agregar el disco. Por favor, inténtalo de nuevo más tarde.');
