@@ -15,7 +15,7 @@ export const DetailProduct = () => {
 
 
     useEffect(() => {
-        fetch(`http://localhost:3000/posts/${id}`) 
+        fetch(`https://backend-megalomaniac.onrender.com/posts/${id}`) 
             .then((response) => response.json())
             .then((data) => {
                 if (data.length > 0) {

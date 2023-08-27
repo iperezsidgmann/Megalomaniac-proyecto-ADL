@@ -15,7 +15,7 @@ export const PostProvider = ({ children }) => {
 
     useEffect(() => {
         if (isLoggedIn && user) { // Verifica que user esté definido y el usuario esté autenticado
-            fetch("http://localhost:3000/posts")
+            fetch("https://backend-megalomaniac.onrender.com/posts")
                 .then((response) => {
                     if (!response.ok) {
                         throw new Error('Error de respuesta');
@@ -47,7 +47,7 @@ export const PostProvider = ({ children }) => {
 
             newPost.ps_us_id = user.id; // Asigna el ID de usuario al nuevo post
 
-            const response = await fetch("http://localhost:3000/posts", {
+            const response = await fetch("https://backend-megalomaniac.onrender.com/posts", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
